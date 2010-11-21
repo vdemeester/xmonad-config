@@ -90,7 +90,7 @@ main = do
 
 -- }}}
 
--- Options {{{àa
+-- Options {{{
 myTerminal           = "urxvtc"
 myBorderWidth        = 1
 myNormalBorderColor  = "#111111"
@@ -100,33 +100,24 @@ myFocusFollowsMouse = False
 
 -- if you change workspace names, be sure to update them throughout
 myWorkspaces = ["1-main","2-web","3-chat","4-dev"] ++ map show [5..9]
---myWorkspaces = [ supWsNum "1" "dev"
---  , supWsNum "2" "web"
---  , supWsNum "3" "chat"
---  , supWsNum "4" "mail"
---  , supWsNum "5" ""
---  , supWsNum "6" ""
---  , supWsNum "7" ""
---  , supWsNum "8" ""
---  , supWsNum "9" ""
---  ]
---  where
---    supWsNum wsName wsNum = if any (`elem` wsNum) ['a'..'z'] then wsName ++  "^p(;_TOP)^fn(" ++ mySmallFont  ++ ")" ++ wsNum ++ "^fn()^p()" else wsName
--- if any (`elem` ws) ['a'..'z'] then pad ws else ""
-
 
 -- aur/dzen2-svn is required for an xft font
---myFont = "Envy Code R-8"
-myFont = "Droid Sans Mono-8"
+-- myFont = "Droid Sans Mono-8"
+myFont = "Monospace-9"
 mySmallFont = "xft:Droid Sans Mono:size=5"
 
 -- background/foreground and various levels of emphasis
 colorBG  = "#606060"
 colorFG  = "#C0C0C0"
+colorBG2 = "#"
 colorFG2 = "#E0E0E0"
+colorBG3 = "#"
 colorFG3 = "#c4df90"
+colorBG4 = "#"
 colorFG4 = "#cc896d"
 colorFG5 = "#c4df90"
+colorBG5 = "#000000"
+colorBG6 = ""
 colorFG6 = "#ffffba"
 
 -- status bar sizes
@@ -146,14 +137,13 @@ myLayout = avoidStruts $ onWorkspace "3-chat" imLayout $ onWorkspace "4-dev" dev
         -- use standardLayouts just like any other workspace
         imLayout = withIM (3/10) (Role "roster") Grid
 
-        devLayout = limitWindows 4 $ MAgnifiercz' 1.4 $ smart $ devTiled ||| Mirror devTiled ||| full
+        devLayout = limitWindows 4 $ magnifiercz' 1.4 $ standardLayouts
 
         -- a simple Tall, Wide, Full setup but hinted, resizable, and
         -- with smarter borders
         standardLayouts = smart $ tiled ||| Mirror tiled |||  full
 
-        tiled = Tall 1 (2/100) Golden
-		devTiled = Tail 1 (2/100) 0.75
+        tiled = Tall 1 (1/100) golden
         full  = Full
 
         -- master:slave set at the golden ratio
@@ -273,7 +263,8 @@ myLogHook h = dynamicLogWithPP $ defaultPP
         , ppTitle           = shorten 100 
         , ppLayout          = dzenFG colorFG2 . renameLayouts . stripIM
         , ppSort            = getSortByXineramaRule
-        , ppExtras          = [myMail, myUpdates]
+        -- , ppExtras          = [myMail, myUpdates]
+        , ppExtras          = [myUpdates]
         , ppOutput          = hPutStrLn h
         }
 
@@ -287,7 +278,7 @@ myLogHook h = dynamicLogWithPP $ defaultPP
         dzenFGL c = dzenColorL c "" 
 
         -- custom loggers
-        myMail    = wrapL "Mail: "    "" . dzenFGL colorFG6 $ maildirNew "/home/vincent/.mail/personal/INBOX"
+        -- myMail    = wrapL "Mail: "    "" . dzenFGL colorFG6 $ maildirNew "/home/vincent/.mail/personal/INBOX"
         myUpdates = wrapL "Updates: " "" . dzenFGL colorFG6 $ countOutputLines "pacman -Qu"
         
         -- count the lines of output of an arbitary command
