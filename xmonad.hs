@@ -71,7 +71,7 @@ main = do
 
     --spawn "conky"
     -- spawn $ "conky -c ~/.dzen_conkyrc | " ++ show myRightBar
-    spawn $ "conky -c ~/.dzen_conkyrc | " ++ show myRightBar ++ " -x  $(echo $((`~/.bin/getResolution.sh` - " ++ rightBarWidth ++ ")))"
+    spawn $ "conky -c ~/.xmonad/dzen_conkyrc | " ++ show myRightBar ++ " -x  $(echo $((`~/.bin/getResolution.sh` - " ++ rightBarWidth ++ ")))"
     -- spawnDzen myRssBar >>= spawnReader myReaderConf
 
     -- ewmh just makes wmctrl work
