@@ -53,6 +53,7 @@ import XMonad.Util.WindowProperties      (getProp32s)
 import XMonad.Util.WorkspaceCompare      (getSortByXineramaRule)
 
 import qualified XMonad.Prompt as P
+import XMonad.Prompt.Ssh
 import qualified XMonad.StackSet as W
 
 -- general haskell stuff
@@ -90,7 +91,7 @@ main = do
 
 -- }}}
 
--- Options {{{
+-- Options {{{àa
 myTerminal           = "urxvtc"
 myBorderWidth        = 1
 myNormalBorderColor  = "#111111"
@@ -99,25 +100,20 @@ myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
 -- if you change workspace names, be sure to update them throughout
-myWorkspaces = ["1-main","2-web","3-chat","4-dev"] ++ map show [5..9]
+myWorkspaces = ["1-misc","2-chat","3-web","4-dev","5-devm"] ++ map show [6..9]
 
 -- aur/dzen2-svn is required for an xft font
--- myFont = "Droid Sans Mono-8"
+--myFont = "Envy Code R-8"
 myFont = "Monospace-9"
 mySmallFont = "xft:Droid Sans Mono:size=5"
 
 -- background/foreground and various levels of emphasis
 colorBG  = "#606060"
 colorFG  = "#C0C0C0"
-colorBG2 = "#"
 colorFG2 = "#E0E0E0"
-colorBG3 = "#"
 colorFG3 = "#c4df90"
-colorBG4 = "#"
 colorFG4 = "#cc896d"
 colorFG5 = "#c4df90"
-colorBG5 = "#000000"
-colorBG6 = ""
 colorFG6 = "#ffffba"
 
 -- status bar sizes
@@ -131,19 +127,20 @@ rightBarWidth = "424"
 --
 -- See http://pbrisbin.com/pages/im-layout.html#update
 --
-myLayout = avoidStruts $ onWorkspace "3-chat" imLayout $ onWorkspace "4-dev" devLayout  $ standardLayouts
+myLayout = avoidStruts $ onWorkspace "2-chat" imLayout $ onWorkspace "4-dev" devLayout $ onWorkspace "5-devm" devLayout $ standardLayouts
 
     where
         -- use standardLayouts just like any other workspace
         imLayout = withIM (3/10) (Role "roster") Grid
 
-        devLayout = limitWindows 4 $ magnifiercz' 1.4 $ standardLayouts
+        devLayout = limitWindows 4 $ magnifiercz' 1.4 $ smart $ devTiled ||| Mirror devTiled ||| full
 
         -- a simple Tall, Wide, Full setup but hinted, resizable, and
         -- with smarter borders
-        standardLayouts = smart $ tiled ||| Mirror tiled |||  full
+        standardLayouts = smart $ tiled ||| Mirror tiled ||| full
 
-        tiled = Tall 1 (1/100) golden
+        tiled = Tall 1 (2/100) (4/5)
+        devTiled = Tall 1 (2/100) (4/5)
         full  = Full
 
         -- master:slave set at the golden ratio
@@ -165,9 +162,9 @@ myManageHook = mainManageHook <+> manageDocks <+> manageFullScreen <+> manageScr
         -- the main managehook
         mainManageHook = composeAll $ concat
             [ [ resource  =? r     --> doIgnore         |  r    <- myIgnores ]
-            , [ className =? c     --> doShift "2-web"  |  c    <- myWebs    ]
-            , [ title     =? t     --> doShift "3-chat" |  t    <- myChats   ]
-            , [ className =? c     --> doShift "3-chat" | (c,_) <- myIMs     ]
+            , [ className =? c     --> doShift "3-web"  |  c    <- myWebs    ]
+            , [ title     =? t     --> doShift "2-chat" |  t    <- myChats   ]
+            , [ className =? c     --> doShift "2-chat" | (c,_) <- myIMs     ]
             , [ className =? c     --> doFloat          |  c    <- myFloats  ]
             , [ className =? c     --> doCenterFloat    |  c    <- myCFloats ]
             , [ name      =? n     --> doCenterFloat    |  n    <- myCNames  ]
@@ -263,8 +260,7 @@ myLogHook h = dynamicLogWithPP $ defaultPP
         , ppTitle           = shorten 100 
         , ppLayout          = dzenFG colorFG2 . renameLayouts . stripIM
         , ppSort            = getSortByXineramaRule
-        -- , ppExtras          = [myMail, myUpdates]
-        , ppExtras          = [myUpdates]
+        , ppExtras          = [myMail, myUpdates]
         , ppOutput          = hPutStrLn h
         }
 
@@ -278,7 +274,7 @@ myLogHook h = dynamicLogWithPP $ defaultPP
         dzenFGL c = dzenColorL c "" 
 
         -- custom loggers
-        -- myMail    = wrapL "Mail: "    "" . dzenFGL colorFG6 $ maildirNew "/home/vincent/.mail/personal/INBOX"
+        myMail    = wrapL "Mail: "    "" . dzenFGL colorFG6 $ maildirNew "/home/vincent/.mail/personal/INBOX"
         myUpdates = wrapL "Updates: " "" . dzenFGL colorFG6 $ countOutputLines "pacman -Qu"
         
         -- count the lines of output of an arbitary command
@@ -357,6 +353,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 myAdditionalKeys :: [(String, X())]
 myAdditionalKeys = [ ("M-j"                   , spawn "~/.bin/launcher"       ) -- dmenu app launcher
          , ("M-S-j"                 , spawn "bashrun"        ) -- gmrun replacement
+         , ("M4-s"                  , mySsh               ) -- prompt for and send a file via mutt
          , ("M4-f"                  , sendFile               ) -- prompt for and send a file via mutt
          , ("M4-m"                  , myMail                 ) -- open mail client
          , ("M4-b"                  , myBrowser              ) -- open web client
@@ -428,6 +425,7 @@ myAdditionalKeys = [ ("M-j"                   , spawn "~/.bin/launcher"       ) 
 
         -- see http://pbrisbin.com/xmonad/docs/SendFile.html
         sendFile   = sendFilePrompt promptConfig "~/.mutt/alias"
+        mySsh      = sshPrompt promptConfig
 
         -- see http://pbrisbin.com/pages/screen_tricks.html
         myIRC      = spawnInScreen "irssi"
