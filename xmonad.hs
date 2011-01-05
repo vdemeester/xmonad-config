@@ -100,7 +100,7 @@ myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
 -- if you change workspace names, be sure to update them throughout
-myWorkspaces = ["1-misc","2-chat","3-web","4-dev","5-devm"] ++ map show [6..9]
+myWorkspaces = ["1-mail","2-chat","3-web","4-dev","5-devm"] ++ map show [6..9]
 
 -- aur/dzen2-svn is required for an xft font
 --myFont = "Envy Code R-8"
@@ -186,6 +186,7 @@ myManageHook = mainManageHook <+> manageDocks <+> manageFullScreen <+> manageScr
         myIgnores = ["desktop","desktop_window"]
         myChats   = ["irssi","mutt" ]
         myWebs    = ["Uzbl","Uzbl-core","Jumanji","Firefox"]
+        myMails   = ["Thunderbird", "Mutt"]
         myFloats  = ["MPlayer","Zenity","VirtualBox","rdesktop"]
         myCFloats = ["Xmessage","Save As...","XFontSel"]
         myCNames  = ["bashrun"]
