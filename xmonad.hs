@@ -133,11 +133,11 @@ myLayout = avoidStruts $ onWorkspace "2-chat" imLayout $ onWorkspace "4-dev" dev
         -- use standardLayouts just like any other workspace
         imLayout = withIM (3/10) (Role "roster") Grid
 
-        devLayout = limitWindows 4 $ magnifiercz' 1.4 $ smart $ devTiled ||| Mirror devTiled ||| full
+        devLayout = limitWindows 4 $ magnifiercz' 1.4 $ smart $ Mirror devTiled ||| full ||| devTiled
 
         -- a simple Tall, Wide, Full setup but hinted, resizable, and
         -- with smarter borders
-        standardLayouts = smart $ tiled ||| Mirror tiled ||| full
+        standardLayouts = smart $ Mirror tiled ||| full ||| tiled
 
         tiled = Tall 1 (2/100) (4/5)
         devTiled = Tall 1 (2/100) (4/5)
