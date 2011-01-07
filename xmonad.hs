@@ -387,10 +387,10 @@ myAdditionalKeys = [ ("M-j"                   , spawn "~/.bin/launcher"       ) 
          --, ("M-S-l"                 , expand                 ) -- expand master (was M-l)
 
          -- media keys
-         , ("<XF86AudioPlay>"       , spawn "mpc toggle"     ) -- play/pause mpd
-         , ("<XF86AudioStop>"       , spawn "mpc stop"       ) -- stop mpd
-         , ("<XF86AudioPrev>"       , spawn "mpc prev"       ) -- prev song
-         , ("<XF86AudioNext>"       , spawn "mpc next"       ) -- next song
+         , ("<XF86AudioPlay>"       , spawn "cmus-remote -u"     ) -- play/pause mpd
+         , ("<XF86AudioStop>"       , spawn "cmus-remote -s"       ) -- stop mpd
+         , ("<XF86AudioPrev>"       , spawn "cmus-remote -p"       ) -- prev song
+         , ("<XF86AudioNext>"       , spawn "cmus-remote -n"       ) -- next song
          , ("<XF86AudioMute>"       , spawn "amixer -q set Master toggle"      ) -- toggle mute
          , ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 1- unmute"    ) -- volume down 
          , ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 1+ unmute"    ) -- volume up
