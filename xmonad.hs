@@ -48,7 +48,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 	]
 	++
 	[((m .|. modm, k), windows $ f i)
-		| (i,k) <- zip (XMonad.workspaces conf) [ xK_quotedbl, xK_guillemotleft, xK_guillemotright, xK_parenleft, xK_parenright, xK_at, xK_plus, xK_minus, xK_slash ]
+		| (i,k) <- zip (XMonad.workspaces conf) [ xK_quotedbl, xK_less, xK_greater, xK_parenleft, xK_parenright, xK_at, xK_plus, xK_minus, xK_slash ]
 		, (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
 	
 	where
