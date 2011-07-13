@@ -37,6 +37,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 	, ((modm, xK_i), focusScreen 1)
 	, ((modm, xK_e), focusScreen 0)
 	, ((modm, xK_j), spawn "dmenu_run")
+	, ((modm, xK_b), ToggleStruts)
 	-- Killing
 	, ((modm .|. shiftMask, xK_c), kill)
 	-- Restarting
