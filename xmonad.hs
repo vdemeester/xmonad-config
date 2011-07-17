@@ -1,3 +1,20 @@
+-------------------------------------------------------------------------------
+-- |
+-- Module       :   xmonad.hs
+-- Copyright    :   (c) Vincent Demeester
+-- License      :   as-is
+--
+-- Maintainer   :   vincent+xmonad@demeester.fr
+-- Stability    :   unstable
+-- Portability  :   unportable (but want to be)
+--
+-- Up to date xmonad configuration, using xmonad-0.9.2 packaged on Debian 
+-- testing (wheezy)
+--
+-- vim:foldmethod=marker foldmarker={{{,}}}
+-------------------------------------------------------------------------------
+
+-- Imports {{{
 import XMonad
 import XMonad.Config.Kde
 -- Import for ToggleStruts
@@ -17,26 +34,32 @@ import XMonad.Prompt.Ssh
 import XMonad.Prompt.Theme
 import XMonad.Prompt.XMonad
 
+import XMonad.Util.Run
+import XMonad.Hooks.DynamicLog
 import qualified XMonad.StackSet as W -- to shift and float windows
 import qualified Data.Map as M
- 
-main = xmonad $ kde4Config
- { modMask    = mod4Mask -- use the Windows button as mod
- , manageHook = manageHook kde4Config <+> myManageHook
- , layoutHook = myLayout
- , keys       = myKeys
- }
- where
-   myManageHook = composeAll . concat $
-     [ [ className   =? c --> doFloat           | c <- myFloats]
-     , [ title       =? t --> doFloat           | t <- myOtherFloats]
-     , [ className   =? c --> doF (W.shift "2") | c <- webApps]
-     , [ className   =? c --> doF (W.shift "3") | c <- ircApps]
-     ]
-   myFloats      = ["MPlayer", "Gimp", "Plasma", "Plasma-desktop", "krunner"]
-   myOtherFloats = ["alsamixer", "Plasma", "Plasma-desktop", "krunner"]
-   webApps       = ["Firefox-bin", "Opera"] -- open on desktop 2
-   ircApps       = ["Ksirc"]                -- open on desktop 3
+-- }}}
+
+main = do
+    h <- spawnPipe "xmobar"
+    xmonad $ kde4Config
+        { modMask    = mod4Mask -- use the Windows button as mod
+        , manageHook = manageHook kde4Config <+> myManageHook
+        , layoutHook = myLayout
+        , logHook    = dynamicLogWithPP $ defaultPP { ppOutput = hPutStrLn h }
+        , keys       = myKeys
+        }
+        where
+          myManageHook = composeAll . concat $
+            [ [ className   =? c --> doFloat           | c <- myFloats]
+            , [ title       =? t --> doFloat           | t <- myOtherFloats]
+            , [ className   =? c --> doF (W.shift "2") | c <- webApps]
+            , [ className   =? c --> doF (W.shift "3") | c <- ircApps]
+            ]
+          myFloats      = ["MPlayer", "Gimp", "Plasma", "Plasma-desktop", "krunner"]
+          myOtherFloats = ["alsamixer", "Plasma", "Plasma-desktop", "krunner"]
+          webApps       = ["Firefox-bin", "Opera"] -- open on desktop 2
+          ircApps       = ["Ksirc"]                -- open on desktop 3
 
 myLayout = avoidStruts $ standardLayouts
     
