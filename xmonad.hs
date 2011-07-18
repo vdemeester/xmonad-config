@@ -16,7 +16,6 @@
 
 -- Imports {{{
 import XMonad
-import XMonad.Config.Kde
 -- Import for ToggleStruts
 import XMonad.Hooks.ManageDocks
 -- Import for smartBorder
@@ -42,23 +41,26 @@ import qualified Data.Map as M
 
 main = do
     h <- spawnPipe "xmobar"
-    xmonad $ kde4Config
-        { modMask    = mod4Mask -- use the Windows button as mod
-        , manageHook = manageHook kde4Config <+> myManageHook
-        , layoutHook = myLayout
-        , logHook    = dynamicLogWithPP $ defaultPP { ppOutput = hPutStrLn h }
-        , keys       = myKeys
+    xmonad $ defaultConfig
+        { terminal          = myTerminal
+        , workspaces        = myWorkspaces
+        , modMask           = mod4Mask -- use the Windows button as mod
+        , manageHook        = manageHook defaultConfig <+> myManageHook
+        , layoutHook        = myLayout
+        , logHook           = dynamicLogWithPP $ defaultPP { ppOutput = hPutStrLn h }
+        , keys              = myKeys
+        , focusFollowsMouse = False
         }
         where
           myManageHook = composeAll . concat $
             [ [ className   =? c --> doFloat           | c <- myFloats]
             , [ title       =? t --> doFloat           | t <- myOtherFloats]
-            , [ className   =? c --> doF (W.shift "2") | c <- webApps]
+            , [ className   =? c --> doF (W.shift "4") | c <- webApps]
             , [ className   =? c --> doF (W.shift "3") | c <- ircApps]
             ]
           myFloats      = ["MPlayer", "Gimp", "Plasma", "Plasma-desktop", "krunner"]
           myOtherFloats = ["alsamixer", "Plasma", "Plasma-desktop", "krunner"]
-          webApps       = ["Firefox-bin", "Opera"] -- open on desktop 2
+          webApps       = ["Firefox-bin", "Opera","Iceweasel","Iceweasel","Navigator"] -- open on desktop 2
           ircApps       = ["Ksirc"]                -- open on desktop 3
 
 myLayout = avoidStruts $ standardLayouts
@@ -72,6 +74,15 @@ myLayout = avoidStruts $ standardLayouts
         misc  = Grid ||| Column 1.6 ||| cross ||| simpleTabbed
         cross = Cross (19/20) (1/100)
 
+-- Options {{{
+-- Workspaces
+myWorkspaces        = ["1-media","2-chat","3-mail","4-web","5-dev"] ++ map show [6..9]
+-- Misc.
+myTerminal          = "urxvtc"
+myBorderWidth       = 1
+-- Fonts (xft :-))
+myFont              = "xft:Droid Sans Mono:size=9"
+-- }}}
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
     , ((modm, xK_space), sendMessage NextLayout)
