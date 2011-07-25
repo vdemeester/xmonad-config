@@ -20,6 +20,10 @@ import XMonad
 import XMonad.Hooks.ManageDocks
 -- Import for smartBorder
 import XMonad.Layout.NoBorders
+-- Local import
+import Utils
+import Dzen (DzenConf(..), DzenWidth(..), TextAlign(..), defaultDzenXft,
+                spawnDzen, spawnToDzen)
 -- Tests
 import XMonad.Layout.CenteredMaster
 import XMonad.Layout.Grid
@@ -39,15 +43,17 @@ import qualified XMonad.StackSet as W -- to shift and float windows
 import qualified Data.Map as M
 -- }}}
 
+--- Main {{{
 main = do
-    h <- spawnPipe "xmobar"
+    d <- spawnDzen monadBar
+    spawnToDzen "conky -c ~/.xmonad/dzen_conkyrc" conkyBar
     xmonad $ defaultConfig
         { terminal          = myTerminal
         , workspaces        = myWorkspaces
         , modMask           = mod4Mask -- use the Windows button as mod
         , manageHook        = manageHook defaultConfig <+> myManageHook
         , layoutHook        = myLayout
-        , logHook           = dynamicLogWithPP $ defaultPP { ppOutput = hPutStrLn h }
+        , logHook           = dynamicLogWithPP $ defaultPP { ppOutput = hPutStrLn d }
         , keys              = myKeys
         , focusFollowsMouse = False
         }
@@ -63,6 +69,34 @@ main = do
           webApps       = ["Firefox-bin", "Opera","Iceweasel","Iceweasel","Navigator"] -- open on desktop 2
           ircApps       = ["Ksirc"]                -- open on desktop 3
 
+--- }}}
+
+--- Options {{{
+-- Workspaces
+myWorkspaces        = ["1-media","2-chat","3-mail","4-web","5-dev"] ++ map show [6..9]
+-- Misc.
+myTerminal          = "urxvtc"
+myBorderWidth       = 1
+-- Fonts (xft :-) & co)
+barFont             = "Play-9"
+themeFont           = "xft:Play:size=9"
+--- }}}
+
+monadBar :: DzenConf
+monadBar = defaultDzenXft
+    { screen    = Just 0
+    , width     = Just (Percent 65)
+    , Dzen.font = Just barFont
+    }
+
+conkyBar :: DzenConf
+conkyBar = defaultDzenXft
+    { xPosition = Just (Percent 65)
+    , alignment = Just RightAlign
+    , width     = Just (Percent 35)
+    , Dzen.font = Just barFont
+    }
+
 myLayout = avoidStruts $ standardLayouts
     
     where
@@ -74,15 +108,6 @@ myLayout = avoidStruts $ standardLayouts
         misc  = Grid ||| Column 1.6 ||| cross ||| simpleTabbed
         cross = Cross (19/20) (1/100)
 
--- Options {{{
--- Workspaces
-myWorkspaces        = ["1-media","2-chat","3-mail","4-web","5-dev"] ++ map show [6..9]
--- Misc.
-myTerminal          = "urxvtc"
-myBorderWidth       = 1
--- Fonts (xft :-))
-myFont              = "xft:Droid Sans Mono:size=9"
--- }}}
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
     , ((modm, xK_space), sendMessage NextLayout)
@@ -109,7 +134,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Killing
     , ((modm .|. shiftMask, xK_c), kill)
     -- Restarting
-    , ((modm, xK_q), spawn $ "xmonad --recompile && xmonad --restart")
+    -- , ((modm, xK_q), spawn $ "xmonad --recompile && xmonad --restart")
+    , ((modm, xK_q), cleanStart)
     -- Push window back into tiling
     , ((modm, xK_l), withFocused $ windows . W.sink)
     , ((modm, xK_comma), sendMessage (IncMasterN 1))
