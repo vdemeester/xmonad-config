@@ -19,6 +19,9 @@ My XMonad configuration highlights are the following :
 * Named-based workspace (1-media, 2-chat, …)
 * Per-workspace layout and more default layout than stock ones
 
+Dzen2 (with conky) status bar is launched when xmonad start and will be killed
+and re-launched if xmonad is re-launched.
+
 ### Modules
 
 Modules that lies in `./lib`
