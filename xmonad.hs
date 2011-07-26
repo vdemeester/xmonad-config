@@ -45,15 +45,14 @@ import qualified Data.Map as M
 
 --- Main {{{
 main = do
-    d <- spawnDzen monadBar
-    spawnToDzen "conky -c ~/.xmonad/dzen_conkyrc" conkyBar
+    xmproc <- spawnPipe "xmobar"
     xmonad $ defaultConfig
         { terminal          = myTerminal
         , workspaces        = myWorkspaces
         , modMask           = mod4Mask -- use the Windows button as mod
         , manageHook        = manageHook defaultConfig <+> myManageHook
         , layoutHook        = myLayout
-        , logHook           = dynamicLogWithPP $ defaultPP { ppOutput = hPutStrLn d }
+        , logHook           = dynamicLogWithPP $ defaultPP { ppOutput = hPutStrLn xmproc }
         , keys              = myKeys
         , focusFollowsMouse = False
         }
