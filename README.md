@@ -12,15 +12,12 @@ My XMonad configuration highlights are the following :
   As I'm most of the time on a [bepo](http://bepo.fr), I'm remapping almost all
   the keys to get the same behavior on a bepo keyboard and on a qwerty keyboard.
 
-* The status bar is powered by dzen2 and conky(-cli).
-* Notifications are using dzen2 too
+* The status bar is powered by xmobar
+* Notifications are using dzen2 -- ?
 * Heavily use of Prompt and ScratchPad (using a customized version of the 
   ScratchPadKeys module from pbrisbin)
 * Named-based workspace (1-media, 2-chat, …)
 * Per-workspace layout and more default layout than stock ones
-
-Dzen2 (with conky) status bar is launched when xmonad start and will be killed
-and re-launched if xmonad is re-launched.
 
 ### Modules
 
