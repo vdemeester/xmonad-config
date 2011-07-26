@@ -19,19 +19,18 @@ import XMonad
 -- Actions
 import XMonad.Actions.CycleWS
 import XMonad.Actions.SpawnOn
+import XMonad.Actions.Submap
+import XMonad.Actions.Search
 -- Hooks
 -- Import for ToggleStruts
+import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers (doCenterFloat)
 -- Layout
 -- Import for smartBorder
 import XMonad.Layout.NoBorders
--- Local import
-import Utils
 -- Tests
-import XMonad.Layout.CenteredMaster
 import XMonad.Layout.Grid
-import XMonad.Layout.Column
-import XMonad.Layout.Cross
 import XMonad.Layout.Tabbed
 -- Prompt(s)
 import XMonad.Prompt
@@ -42,12 +41,16 @@ import XMonad.Prompt.Ssh
 import XMonad.Prompt.Workspace
 -- Topics
 import XMonad.Actions.TopicSpace
-
+-- Util
+import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.Run
-import XMonad.Hooks.DynamicLog
+-- Misc
 import qualified XMonad.StackSet as W -- to shift and float windows
 import qualified Data.Map as M
 import Data.Monoid(mconcat)
+-- Local import
+import ScratchPadKeys
+import Utils
 -- }}}
 
 --- Main {{{
@@ -56,27 +59,17 @@ main = do
     xmproc <- spawnPipe "xmobar"
     sp <- mkSpawner
     xmonad $ defaultConfig
-        { terminal          = myTerminal
-        , workspaces        = myTopics
-        , modMask           = mod4Mask -- use the Windows button as mod
-        , manageHook        = manageHook defaultConfig <+> manageSpawn sp <+> myManageHook
-        , layoutHook        = myLayout
-        , logHook           = dynamicLogWithPP $ xmobarPP { ppOutput = hPutStrLn xmproc }
-        , keys              = myKeys sp
-        , focusFollowsMouse = False
-        }
-        where
-          myManageHook = composeAll . concat $
-            [ [ className   =? c --> doFloat           | c <- myFloats]
-            , [ title       =? t --> doFloat           | t <- myOtherFloats]
-            , [ className   =? c --> doF (W.shift "4") | c <- webApps]
-            , [ className   =? c --> doF (W.shift "3") | c <- ircApps]
-            ]
-          myFloats      = ["MPlayer", "Gimp", "Plasma", "Plasma-desktop", "krunner"]
-          myOtherFloats = ["alsamixer", "Plasma", "Plasma-desktop", "krunner"]
-          webApps       = ["Firefox-bin", "Opera","Iceweasel","Iceweasel","Navigator"] -- open on desktop 2
-          ircApps       = ["Ksirc"]                -- open on desktop 3
-
+        { terminal              = myTerminal
+        , workspaces            = myTopics
+        , modMask               = mod4Mask -- use the Windows button as mod
+        , manageHook            = manageHook defaultConfig <+> manageSpawn sp <+> myManageHook <+> manageScratchPads myScratchPadList
+        , layoutHook            = myLayout
+        , logHook               = dynamicLogWithPP $ myPP { ppOutput = hPutStrLn xmproc }
+        , keys                  = myKeys sp
+        , focusFollowsMouse     = False
+        , focusedBorderColor    = base0
+        , normalBorderColor     = base2
+        } `additionalKeysP` myAdditionalKeys
 --- }}}
 
 --- Options {{{
@@ -104,6 +97,12 @@ violet              = "#6c71c4"
 blue                = "#268bd2"
 cyan                = "#2aa198"
 green               = "#859900"
+-- Search(s)
+searchEngineMap method = M.fromList $
+    [ ((0, xK_g), method google)
+    , ((0, xK_h), method hoogle)
+    , ((0, xK_w), method wikipedia)
+    ]
 --- }}}
 
 --- Themes {{
@@ -114,7 +113,7 @@ myXPConfig = defaultXPConfig
     , bgColor   = base3
     , bgHLight  = base2
     , fgHLight  = blue
-    , position  = Bottom
+    , position  = Top
     }
  
 --- Theme For Tabbed layout
@@ -133,13 +132,28 @@ myTheme = defaultTheme
     }
 --- }}
 
+--- DynamicLogs {{{
+myPP :: PP
+myPP = xmobarPP
+    { ppHidden = hideNSP
+    , ppTitle   = xmobarColor base01 "" . shorten 100
+    , ppCurrent = xmobarColor base3 base00 . pad
+    , ppSep     = xmobarColor base00 "" " "
+    , ppUrgent  = xmobarColor base3 red . xmobarStrip
+    , ppLayout  = xmobarColor base2 blue . pad . \s ->
+        case s of
+            "Mirror Tall"          -> "Tall"
+            "Tabbed Simplest"      -> "Tab"
+            _                      -> pad s
+    }
+--- }}}
+
 --- Topics (Workspaces) {{{
--- Workspaces
-myWorkspaces        = ["1-media","2-chat","3-mail","4-web","5-dev"] ++ map show [6..9]
 -- Topic definition, lots of !
 myTopics :: [Topic]
 myTopics =
     [ "default" -- the default one
+    , "web", "mail"
     , "config", "xmonad", "haskell" -- dev
     , "sbr.org", "sites" -- sites
     , "music", "video", "pictures" -- multimedia
@@ -190,7 +204,19 @@ spawnShell = currentTopicDir myTopicConfig >>= spawnShellIn
 spawnShellIn :: Dir -> X ()
 spawnShellIn dir = spawn $ myTerminal ++ " -title urxvt -e sh -c 'cd ''" ++ dir ++ "'' && " ++ myShell ++ "'"
 --- }}}
---
+
+--- ManageHooks {{{
+myManageHook :: ManageHook
+myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] -- <+> manageScratchPads scratchPadList
+
+    where myActions = [ ("rdesktop"  , doFloat         )
+                      , ("Xmessage"  , doCenterFloat   )
+                      , ("Iceweasel" , doShift "web" )
+                      , ("Firefox"   , doShift "web" )
+                      , ("irssi"     , doShift "irc")
+                      ]
+--- }}}
+
 --- Layout {{{
 myLayout = avoidStruts $ standardLayouts
     
@@ -200,8 +226,7 @@ myLayout = avoidStruts $ standardLayouts
         
         tiled = Tall 1 (2/100) (4/5)
         full  = Full
-        misc  = Grid ||| Column 1.6 ||| cross ||| tabbed shrinkText myTheme
-        cross = Cross (19/20) (1/100)
+        misc  = Grid ||| tabbed shrinkText myTheme
 --- }}}
 
 --- Keys {{{
@@ -228,6 +253,9 @@ myKeys sp conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_j), shellPromptHere sp myXPConfig)
     , ((modm .|. shiftMask, xK_j), runOrRaisePrompt myXPConfig)
     , ((modm .|. controlMask, xK_s), sshPrompt myXPConfig)
+    -- Prompt(s) search
+    , ((modm, xK_F2), submap $ searchEngineMap $ promptSearch myXPConfig)
+    , ((modm .|. shiftMask, xK_F2), submap $ searchEngineMap $ selectSearch)
     -- CycleWS
     , ((modm,               xK_Down),  nextWS)
     , ((modm,               xK_Up),    prevWS)
@@ -260,4 +288,15 @@ myKeys sp conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     where
 
         focusScreen n = screenWorkspace n >>= flip whenJust (windows . W.view)
+
+myAdditionalKeys :: [(String, X())]
+myAdditionalKeys = scratchPadKeys myScratchPadList
+
+--- }}}
+
+--- ScratchPad {{{
+-- | All here-defined scratchpads in a list
+myScratchPadList :: [ScratchPad]
+myScratchPadList = [scratchMixer, scratchTop]
+
 --- }}}
