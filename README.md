@@ -13,10 +13,9 @@ My XMonad configuration highlights are the following :
   the keys to get the same behavior on a bepo keyboard and on a qwerty keyboard.
 
 * The status bar is powered by xmobar
-* Notifications are using dzen2 -- ?
 * Heavily use of Prompt and ScratchPad (using a customized version of the 
   ScratchPadKeys module from pbrisbin)
-* Named-based workspace (1-media, 2-chat, …)
+* Topic usage (replacement of workspace)
 * Per-workspace layout and more default layout than stock ones
 
 ### Modules
