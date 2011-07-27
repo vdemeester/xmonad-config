@@ -290,7 +290,11 @@ myKeys sp conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         focusScreen n = screenWorkspace n >>= flip whenJust (windows . W.view)
 
 myAdditionalKeys :: [(String, X())]
-myAdditionalKeys = scratchPadKeys myScratchPadList
+myAdditionalKeys = 
+    [ ("<XF86AudioMute>"       , spawn "amixer -q set Master toggle"      ) -- toggle mute
+    , ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 1- unmute"    ) -- volume down 
+    , ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 1+ unmute"    ) -- volume up
+    ] ++ scratchPadKeys myScratchPadList
 
 --- }}}
 
