@@ -294,6 +294,10 @@ myAdditionalKeys =
     [ ("<XF86AudioMute>"       , spawn "amixer -q set Master toggle"      ) -- toggle mute
     , ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 1- unmute"    ) -- volume down 
     , ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 1+ unmute"    ) -- volume up
+    , ("<XF86AudioPlay>"       , spawn "mpc toggle"     ) -- play/pause mpd
+    , ("<XF86AudioStop>"       , spawn "mpc stop"       ) -- stop mpd
+    , ("<XF86AudioPrev>"       , spawn "mpc previous"       ) -- prev song
+    , ("<XF86AudioNext>"       , spawn "mpc next"       ) -- next song
     ] ++ scratchPadKeys myScratchPadList
 
 --- }}}
