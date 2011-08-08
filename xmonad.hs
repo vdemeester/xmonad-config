@@ -179,7 +179,8 @@ myTopicConfig = TopicConfig
     , defaultTopic = "default"
     , topicActions = M.fromList $
         [ ("config", spawnShell)
-        , ("xmonad", spawnShell >> spawn "gvim .")
+        , ("xmonad", spawnShell >> spawn "cd .xmonad && gvim xmonad.hs")
+        , ("music", spawn $ myTerminal ++ " -e ncmpcpp")
         ]
     }
 
