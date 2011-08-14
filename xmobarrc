@@ -1,0 +1,23 @@
+Config { font           = "xft:Play-8.5"  
+         , bgColor      = "#eee8d5"
+         , fgColor      = "#002b36"
+         , border       = BottomBM 0
+         , borderColor  = "#657b83"
+         , position     = Top
+         , lowerOnStart = True
+         , commands     = [ Run Cpu ["<cpu0>/<cpu1>","-L","3","-H","50","-l","#859900","--normal","#cb4b16","--high","#dc322f"]   40
+                          , Run Cpu ["<cpu0>","-L","10","-H","80","-l","#859900","--normal","#cb4b16","--high","#dc322f"]  40
+                          , Run Memory ["-t","Mem: <usedratio>%", "-l", "#859900", "--normal","#cb4b16","--high","#dc322f"] 40
+                          , Run Date "%a %b %_d %H:%M" "date" 60
+                          , Run StdinReader
+                          , Run Battery ["-t","<timeleft> (<left>%)",
+                            "-L", "10", "-H", "80", "-p", "3",
+                            "--", "-O", "<fc=#859900>On</fc> - ", "-o", "",
+                            "-L", "-15", "-H", "-5",
+                            "-l", "#dc322f", "-m", "#268bd2", "-h", "#859900"]
+                             100
+                          ]
+         , sepChar      = "%"
+         , alignSep     = "}{"
+         , template = " %StdinReader% }{ %battery% <fc=#657b83>|</fc> %cpu% <fc=#657b83>|</fc> %memory% <fc=#657b83>|</fc> %date% "
+         }
