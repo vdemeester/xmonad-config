@@ -1,4 +1,9 @@
-# My xmonad config
+                                          _ 
+    __  ___ __ ___   ___  _ __   __ _  __| |
+    \ \/ / '_ ` _ \ / _ \| '_ \ / _` |/ _` |
+     >  <| | | | | | (_) | | | | (_| | (_| |
+    /_/\_\_| |_| |_|\___/|_| |_|\__,_|\__,_|
+
 
 XMonad is my window manager of choice, and this is the git repository where my
 configurations are stored.
