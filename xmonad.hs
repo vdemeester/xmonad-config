@@ -4,7 +4,7 @@
 -- Copyright    :   (c) Vincent Demeester
 -- License      :   as-is
 --
--- Maintainer   :   vincent+xmonad@demeester.fr
+-- Maintainer   :   vincent+xmonad AT demeester.fr
 -- Stability    :   unstable
 -- Portability  :   unportable (but want to be)
 --
