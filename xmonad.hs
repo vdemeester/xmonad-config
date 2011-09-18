@@ -97,15 +97,21 @@ violet              = "#6c71c4"
 blue                = "#268bd2"
 cyan                = "#2aa198"
 green               = "#859900"
--- Search(s)
+-- Search engines {{{
+-- Custom engine definition (and custom search funciton ?)
+
+-- Map
 searchEngineMap method = M.fromList $
     [ ((0, xK_g), method google)
     , ((0, xK_h), method hoogle)
     , ((0, xK_w), method wikipedia)
+    , ((0, xK_d), method deb)
+    , ((0, xK_b), method debbts)
     ]
 --- }}}
+--- }}}
 
---- Themes {{
+--- Themes {{{
 -- Theme for prompt
 myXPConfig = defaultXPConfig                                    
     { font      = themeFont
@@ -130,7 +136,7 @@ myTheme = defaultTheme
     , urgentBorderColor     = red
     , urgentTextColor       = red
     }
---- }}
+--- }}}
 
 --- DynamicLogs {{{
 myPP :: PP
