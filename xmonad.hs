@@ -75,7 +75,7 @@ main = do
 --- Options {{{
 -- Misc.
 myTerminal          = "urxvtc"
-myShell             = "zsh"
+myShell             = "bash"
 myBorderWidth       = 1
 -- Fonts (xft :-) & co)
 barFont             = "Play-9"
