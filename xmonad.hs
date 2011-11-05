@@ -29,6 +29,8 @@ import XMonad.Hooks.ManageHelpers (doCenterFloat)
 -- Layout
 -- Import for smartBorder
 import XMonad.Layout.NoBorders
+import XMonad.Layout.IM             (Property(..), withIM)
+import XMonad.Layout.PerWorkspace   (onWorkspace)
 -- Tests
 import XMonad.Layout.Grid
 import XMonad.Layout.Tabbed
@@ -187,6 +189,7 @@ myTopicConfig = TopicConfig
         [ ("config", spawnShell)
         , ("xmonad", spawnShell >> spawn "cd .xmonad && gvim xmonad.hs")
         , ("music", spawn $ myTerminal ++ " -e ncmpcpp")
+        , ("chat", spawn "psi-plus")
         ]
     }
 
@@ -225,12 +228,12 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] -- <+> manag
 --- }}}
 
 --- Layout {{{
-myLayout = avoidStruts $ standardLayouts
-    
+myLayout = avoidStruts $ onWorkspace "chat" imLayout $ standardLayouts
     where
+        -- specific layouts
+        imLayout = withIM (2/10) (And (ClassName "psi") (Resource "main")) Grid
         -- standard layouts
         standardLayouts = smartBorders $ Mirror tiled ||| full ||| tiled ||| misc
-        
         tiled = Tall 1 (2/100) (4/5)
         full  = Full
         misc  = Grid ||| tabbed shrinkText myTheme
