@@ -80,8 +80,8 @@ myTerminal          = "urxvtc"
 myShell             = "bash"
 myBorderWidth       = 1
 -- Fonts (xft :-) & co)
-barFont             = "Play-9"
-themeFont           = "xft:Play:size=9"
+barFont             = "Play-8"
+themeFont           = "xft:Play:size=8"
 -- Colors, solarized
 base03              = "#002b36"
 base02              = "#073642"

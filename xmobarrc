@@ -1,4 +1,4 @@
-Config { font           = "xft:Play-8.5"  
+Config { font           = "xft:Play-8"
          , bgColor      = "#eee8d5"
          , fgColor      = "#002b36"
          , border       = BottomBM 0
