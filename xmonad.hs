@@ -150,7 +150,7 @@ myPP = xmobarPP
     , ppUrgent  = xmobarColor base3 red . xmobarStrip
     , ppLayout  = xmobarColor base2 blue . pad . \s ->
         case s of
-            "Mirror Tall"          -> "Tall"
+            "Mirror Tall"          -> "MTall"
             "Tabbed Simplest"      -> "Tab"
             _                      -> pad s
     }
@@ -161,12 +161,13 @@ myPP = xmobarPP
 myTopics :: [Topic]
 myTopics =
     [ "default" -- the default one
-    , "web", "mail"
-    , "config", "xmonad", "haskell" -- dev
-    , "sbr.org", "sites" -- sites
+    , "web", "mail" -- firefox, thunderbird
+    , "config", "haskell", "python", "eclipse" -- dev
+    , "sbr.org" -- sites
     , "music", "video", "pictures" -- multimedia
-    , "irc", "chat" -- chat
+    , "chat" -- chat
     , "doc", "ebook" -- documents
+    , "games" -- games
     , "test", "wip"
     ]
 -- Topic configuration
@@ -174,22 +175,22 @@ myTopicConfig :: TopicConfig
 myTopicConfig = TopicConfig
     { topicDirs = M.fromList $
         [ ("config", "src/git/configs")
-        , ("xmonad", "src/git/configs/xmonad")
-        , ("sites", "src/git/sites")
         , ("sbr.org", "src/git/sites/shortbrain.org")
         , ("music", "music")
         , ("video", "video")
         , ("pictures", "pictures")
         , ("doc", "documents")
         , ("ebook", "documents/ebook")
+        , ("games", "games")
         ]
     , defaultTopicAction = const $ spawnShell
     , defaultTopic = "default"
     , topicActions = M.fromList $
-        [ ("config", spawnShell)
-        , ("xmonad", spawnShell >> spawn "cd .xmonad && gvim xmonad.hs")
+        [ ("config", spawn "cd src/git/configs/ && gvim ")
         , ("music", spawn $ myTerminal ++ " -e ncmpcpp")
+        , ("mail", spawn "thunderbird")
         , ("chat", spawn "psi-plus")
+        , ("eclipse", spawn "eclipse")
         ]
     }
 
@@ -228,10 +229,12 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] -- <+> manag
 --- }}}
 
 --- Layout {{{
-myLayout = avoidStruts $ onWorkspace "chat" imLayout $ standardLayouts
+myLayout = avoidStruts $ onWorkspace "chat" imLayout $ onWorkspace "web" webLayout $ onWorkspace "eclipse" eclipseLayout $ standardLayouts
     where
         -- specific layouts
         imLayout = withIM (2/10) (And (ClassName "psi") (Resource "main")) Grid
+        webLayout = smartBorders $ (tabbed shrinkText myTheme) ||| Grid
+        eclipseLayout = smartBorders $ full ||| Grid
         -- standard layouts
         standardLayouts = smartBorders $ Mirror tiled ||| full ||| tiled ||| misc
         tiled = Tall 1 (2/100) (4/5)
@@ -315,6 +318,6 @@ myAdditionalKeys =
 --- ScratchPad {{{
 -- | All here-defined scratchpads in a list
 myScratchPadList :: [ScratchPad]
-myScratchPadList = [scratchMixer, scratchTop]
+myScratchPadList = [scratchMixer, scratchTop, scratchTerminal]
 
 --- }}}

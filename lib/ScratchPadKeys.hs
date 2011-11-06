@@ -149,10 +149,10 @@ scratchTop = ScratchPad
 -- | A terminal along the bottom edge
 scratchTerminal :: ScratchPad
 scratchTerminal = ScratchPad
-    { keybind  = "M4-t"
+    { keybind  = "M4-$"
     , cmd      = "urxvtc -name sp-term"
     , query    = resource =? "sp-term"
-    , hook     = bottomEdge 0.15
+    , hook     = bottomEdge 0.55
     }
 
 scratchVim :: ScratchPad
