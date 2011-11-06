@@ -21,6 +21,7 @@ My XMonad configuration highlights are the following :
 * Heavily use of Prompt and ScratchPad (using a customized version of the 
   ScratchPadKeys module from pbrisbin)
 * Topic usage (replacement of workspace)
+  Lots of topics, and most of them with a custom layout (and default application)
 * Per-workspace layout and more default layout than stock ones
 
 ### Modules
@@ -37,6 +38,7 @@ Modules that lies in `./lib`
 * ghc 6 or 7
 * xmonad 0.9.2
 * xmonad-contrib 0.9.2
+* xmobar with `--flags="with_xft"`
 
 * dzen2
 * conky(-cli)
