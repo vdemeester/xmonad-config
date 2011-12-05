@@ -59,18 +59,17 @@ import Utils
 main = do
     checkTopicConfig myTopics myTopicConfig
     xmproc <- spawnPipe "xmobar"
-    sp <- mkSpawner
     xmonad $ defaultConfig
         { terminal              = myTerminal
         , workspaces            = myTopics
         , modMask               = mod4Mask -- use the Windows button as mod
-        , manageHook            = manageHook defaultConfig <+> manageSpawn sp <+> myManageHook <+> manageScratchPads myScratchPadList
+        , manageHook            = manageHook defaultConfig <+> manageSpawn <+> myManageHook <+> manageScratchPads myScratchPadList
         , layoutHook            = myLayout
         , logHook               = dynamicLogWithPP $ myPP { ppOutput = hPutStrLn xmproc }
-        , keys                  = myKeys sp
+        , keys                  = myKeys
         , focusFollowsMouse     = False
         , focusedBorderColor    = base0
-        , normalBorderColor     = base2
+        , normalBorderColor     = base1
         } `additionalKeysP` myAdditionalKeys
 --- }}}
 
@@ -243,8 +242,8 @@ myLayout = avoidStruts $ onWorkspace "chat" imLayout $ onWorkspace "web" webLayo
 --- }}}
 
 --- Keys {{{
-myKeys sp conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
-    [ ((modm .|. controlMask, xK_Return), spawnHere sp $ XMonad.terminal conf)
+myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
+    [ ((modm .|. controlMask, xK_Return), spawnHere $ XMonad.terminal conf)
     , ((modm .|. shiftMask, xK_Return), spawnShell) -- start shell in topic dir
     , ((modm, xK_d), spawnDolphin) -- start shell in topic dir
     --[ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
@@ -263,7 +262,7 @@ myKeys sp conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_b), sendMessage ToggleStruts)
     -- Prompt(s)
     , ((modm, xK_F1), manPrompt myXPConfig)
-    , ((modm, xK_j), shellPromptHere sp myXPConfig)
+    , ((modm, xK_j), shellPromptHere myXPConfig)
     , ((modm .|. shiftMask, xK_j), runOrRaisePrompt myXPConfig)
     , ((modm .|. controlMask, xK_s), sshPrompt myXPConfig)
     -- Prompt(s) search

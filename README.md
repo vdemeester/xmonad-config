@@ -36,8 +36,8 @@ Modules that lies in `./lib`
 ## Dependencies
 
 * ghc 6 or 7
-* xmonad 0.9.2
-* xmonad-contrib 0.9.2
+* xmonad 0.10
+* xmonad-contrib 0.10
 * xmobar with `--flags="with_xft"`
 
 * dzen2
