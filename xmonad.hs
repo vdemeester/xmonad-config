@@ -160,7 +160,7 @@ myPP = xmobarPP
 myTopics :: [Topic]
 myTopics =
     [ "default" -- the default one
-    , "web", "mail" -- firefox, thunderbird
+    , "web" -- firefox, thunderbird
     , "config", "haskell", "python", "eclipse" -- dev
     , "sbr.org" -- sites
     , "music", "video", "pictures" -- multimedia
@@ -187,7 +187,6 @@ myTopicConfig = TopicConfig
     , topicActions = M.fromList $
         [ ("config", spawn "cd src/git/configs/ && gvim ")
         , ("music", spawn $ myTerminal ++ " -e ncmpcpp")
-        , ("mail", spawn "thunderbird")
         , ("chat", spawn "psi-plus")
         , ("eclipse", spawn "eclipse")
         ]
@@ -317,6 +316,6 @@ myAdditionalKeys =
 --- ScratchPad {{{
 -- | All here-defined scratchpads in a list
 myScratchPadList :: [ScratchPad]
-myScratchPadList = [scratchMixer, scratchTop, scratchTerminal]
+myScratchPadList = [scratchMixer, scratchTop, scratchTerminal,scratchMutt]
 
 --- }}}

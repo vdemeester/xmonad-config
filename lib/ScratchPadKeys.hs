@@ -28,6 +28,7 @@ module ScratchPadKeys (
     scratchPadList,
     scratchMixer, scratchMusic,
     scratchTerminal, scratchTop,
+    scratchMutt,
     -- * ManageHooks
     -- $managehooks
     centerScreen, bottomEdge
@@ -126,6 +127,15 @@ scratchMixer = ScratchPad
     , cmd      = "urxvtc -name sp-alsamixer -e alsamixer"
     , query    = resource =? "sp-alsamixer"
     , hook     = centerScreen 0.65
+    }
+
+-- | ncmpcpp center screen
+scratchMutt :: ScratchPad
+scratchMutt = ScratchPad
+    { keybind  = "M4-m"
+    , cmd      = "urxvtc -name sp-mutt -e mutt"
+    , query    = resource =? "sp-mutt"
+    , hook     = centerScreen 0.95
     }
 
 -- | ncmpcpp center screen
