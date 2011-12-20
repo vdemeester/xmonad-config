@@ -316,6 +316,6 @@ myAdditionalKeys =
 --- ScratchPad {{{
 -- | All here-defined scratchpads in a list
 myScratchPadList :: [ScratchPad]
-myScratchPadList = [scratchMixer, scratchTop, scratchTerminal,scratchMutt]
+myScratchPadList = [scratchMixer, scratchTop, scratchTerminal,scratchMutt,scratchMusic]
 
 --- }}}

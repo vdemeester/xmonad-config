@@ -144,7 +144,7 @@ scratchMusic = ScratchPad
     { keybind  = "M4-n"
     , cmd      = "urxvtc -name sp-ncmpcpp -e ncmpcpp"
     , query    = resource =? "sp-ncmpcpp"
-    , hook     = centerScreen 0.65
+    , hook     = centerScreen 0.75
     }
 
 -- | htop center screen
