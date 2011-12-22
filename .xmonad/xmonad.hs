@@ -33,6 +33,7 @@ import XMonad.Layout.IM             (Property(..), withIM)
 import XMonad.Layout.PerWorkspace   (onWorkspace)
 -- Tests
 import XMonad.Layout.Grid
+import XMonad.Actions.GridSelect
 import XMonad.Layout.Tabbed
 -- Prompt(s)
 import XMonad.Prompt
@@ -286,6 +287,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_l), withFocused $ windows . W.sink)
     , ((modm, xK_comma), sendMessage (IncMasterN 1))
     , ((modm, xK_period), sendMessage (IncMasterN (-1)))
+    -- Tests
+    , ((modm .|. controlMask, xK_g), goToSelected defaultGSConfig)
     ]
     -- FIXME: the following stuff is doing no sheet
     ++
