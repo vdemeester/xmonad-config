@@ -114,7 +114,7 @@ searchEngineMap method = M.fromList $
 
 --- Themes {{{
 -- Theme for prompt
-myXPConfig = defaultXPConfig                                    
+myXPConfig = defaultXPConfig
     { font      = themeFont
     , fgColor   = base03
     , bgColor   = base3
@@ -122,7 +122,7 @@ myXPConfig = defaultXPConfig
     , fgHLight  = blue
     , position  = Top
     }
- 
+
 --- Theme For Tabbed layout
 myTheme = defaultTheme 
     { fontName              = themeFont
@@ -161,8 +161,7 @@ myTopics :: [Topic]
 myTopics =
     [ "default" -- the default one
     , "web" -- firefox, thunderbird
-    , "config", "haskell", "python", "eclipse" -- dev
-    , "sbr.org" -- sites
+    , "dev", "eclipse", "sites" -- dev
     , "music", "video", "pictures" -- multimedia
     , "chat" -- chat
     , "doc", "ebook" -- documents
@@ -173,8 +172,7 @@ myTopics =
 myTopicConfig :: TopicConfig
 myTopicConfig = TopicConfig
     { topicDirs = M.fromList $
-        [ ("config", "src/git/configs")
-        , ("sbr.org", "src/git/sites/shortbrain.org")
+        [ ("sites", "src/git/sites")
         , ("music", "music")
         , ("video", "video")
         , ("pictures", "pictures")
@@ -185,8 +183,7 @@ myTopicConfig = TopicConfig
     , defaultTopicAction = const $ spawnShell
     , defaultTopic = "default"
     , topicActions = M.fromList $
-        [ ("config", spawn "cd src/git/configs/ && gvim ")
-        , ("music", spawn $ myTerminal ++ " -e ncmpcpp")
+        [ ("music", spawn $ myTerminal ++ " -e ncmpcpp")
         , ("chat", spawn "psi-plus")
         , ("eclipse", spawn "eclipse")
         ]
@@ -316,6 +313,6 @@ myAdditionalKeys =
 --- ScratchPad {{{
 -- | All here-defined scratchpads in a list
 myScratchPadList :: [ScratchPad]
-myScratchPadList = [scratchMixer, scratchTop, scratchTerminal,scratchMutt,scratchMusic]
+myScratchPadList = [scratchMixer, scratchTop, scratchTerminal, scratchMutt, scratchMusic, scratchVim]
 
 --- }}}

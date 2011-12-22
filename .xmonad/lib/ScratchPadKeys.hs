@@ -28,7 +28,7 @@ module ScratchPadKeys (
     scratchPadList,
     scratchMixer, scratchMusic,
     scratchTerminal, scratchTop,
-    scratchMutt,
+    scratchMutt, scratchVim,
     -- * ManageHooks
     -- $managehooks
     centerScreen, bottomEdge
@@ -160,19 +160,18 @@ scratchTop = ScratchPad
 scratchTerminal :: ScratchPad
 scratchTerminal = ScratchPad
     { keybind  = "M4-$"
-    , cmd      = "urxvtc -name sp-term"
+    , cmd      = "urxvtc -name sp-term -e tmx default"
     , query    = resource =? "sp-term"
     , hook     = bottomEdge 0.55
     }
 
 scratchVim :: ScratchPad
 scratchVim = ScratchPad
-	{ keybind = "M4-v"
-	-- , cmd	  = "urxvtc -name sp-vim -e vim"
-	, cmd	  = "urxvtc -name sp-vim -e vim"
-	, query   = resource =? "sp-vim"
-	, hook	  = centerScreen 0.85
-	}
+    { keybind = "M4-v"
+    , cmd     = "urxvtc -name sp-vim -e vim"
+    , query   = resource =? "sp-vim"
+    , hook    = centerScreen 0.85
+    }
 
 -- $managehooks
 --
