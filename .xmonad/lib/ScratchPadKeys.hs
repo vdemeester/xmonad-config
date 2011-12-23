@@ -38,6 +38,7 @@ import XMonad
 import XMonad.Actions.DynamicWorkspaces  (addHiddenWorkspace)
 import XMonad.ManageHook                 (composeAll)
 import XMonad.Hooks.ManageHelpers        (doRectFloat)
+import XMonad.Util.NamedScratchpad       (nonFloating)
 import Control.Monad                     (filterM)
 
 import qualified XMonad.StackSet as W
@@ -170,7 +171,8 @@ scratchVim = ScratchPad
     { keybind = "M4-v"
     , cmd     = "urxvtc -name sp-vim -e vim"
     , query   = resource =? "sp-vim"
-    , hook    = centerScreen 0.85
+    -- , hook    = centerScreen 0.85
+    , hook    = nonFloating
     }
 
 -- $managehooks
