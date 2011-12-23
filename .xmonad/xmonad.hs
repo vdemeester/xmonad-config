@@ -25,6 +25,7 @@ import XMonad.Actions.Search
 -- Import for ToggleStruts
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.ManageHelpers (doCenterFloat)
 -- Layout
 -- Import for smartBorder
@@ -60,7 +61,7 @@ import Utils
 main = do
     checkTopicConfig myTopics myTopicConfig
     xmproc <- spawnPipe "xmobar"
-    xmonad $ defaultConfig
+    xmonad $ withUrgencyHookC NoUrgencyHook urgencyConfig { suppressWhen = Focused } $ defaultConfig
         { terminal              = myTerminal
         , workspaces            = myTopics
         , modMask               = mod4Mask -- use the Windows button as mod
@@ -69,8 +70,8 @@ main = do
         , logHook               = dynamicLogWithPP $ myPP { ppOutput = hPutStrLn xmproc }
         , keys                  = myKeys
         , focusFollowsMouse     = False
-        , focusedBorderColor    = base0
-        , normalBorderColor     = base1
+        , focusedBorderColor    = "#131313"
+        , normalBorderColor     = "#191919"
         } `additionalKeysP` myAdditionalKeys
 --- }}}
 
@@ -81,7 +82,9 @@ myShell             = "bash"
 myBorderWidth       = 1
 -- Fonts (xft :-) & co)
 barFont             = "Play-8"
-themeFont           = "xft:Play:size=8"
+-- themeFont           = "xft:Play:size=8"
+-- themeFont           = "xft:DejaVu Sans Mono:size=8:antialias=true"
+themeFont           = "xft:Droid Sans Mono:size=8:antialias=true"
 -- Colors, solarized
 base03              = "#002b36"
 base02              = "#073642"
@@ -98,7 +101,7 @@ magenta             = "#d33682"
 violet              = "#6c71c4"
 blue                = "#268bd2"
 cyan                = "#2aa198"
-green               = "#859900"
+green               = "#afdf87"
 -- Search engines {{{
 -- Custom engine definition (and custom search funciton ?)
 
@@ -144,15 +147,19 @@ myTheme = defaultTheme
 myPP :: PP
 myPP = xmobarPP
     { ppHidden = hideNSP
-    , ppTitle   = xmobarColor base01 "" . shorten 100
-    , ppCurrent = xmobarColor base3 base00 . pad
-    , ppSep     = xmobarColor base00 "" " "
-    , ppUrgent  = xmobarColor base3 red . xmobarStrip
-    , ppLayout  = xmobarColor base2 blue . pad . \s ->
+    , ppTitle   = xmobarColor "#dfafdf" "" . shorten 60
+    , ppCurrent = xmobarColor "#1c1c1c" "#dfaf87" . pad
+    , ppSep     = xmobarColor "#1C1C1C" "" " "
+    , ppUrgent  = xmobarColor "#1C1C1C" "#df8787" . wrap " " " " . xmobarStrip
+    , ppLayout  = xmobarColor "#1C1C1C" "#444444" . pad . \s ->
         case s of
-            "Mirror Tall"          -> "MTall"
-            "Tabbed Simplest"      -> "Tab"
-            _                      -> pad s
+            "Tall"                  -> "▥"
+            "Mirror Tall"           -> "▤"
+            "Full"                  -> "□"
+            "Grid"                  -> "▦"
+            "IM Grid"               -> "▩"
+            "Tabbed Simplest"       -> "▔"
+            _                       -> pad s
     }
 --- }}}
 

@@ -161,7 +161,7 @@ scratchTop = ScratchPad
 scratchTerminal :: ScratchPad
 scratchTerminal = ScratchPad
     { keybind  = "M4-$"
-    , cmd      = "urxvtc -name sp-term -e tmx default"
+    , cmd      = "urxvtc -title ScratchTerminal -name sp-term -e tmx default"
     , query    = resource =? "sp-term"
     , hook     = bottomEdge 0.55
     }
