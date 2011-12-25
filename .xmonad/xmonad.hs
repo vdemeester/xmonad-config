@@ -288,6 +288,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_g), promptedShift)
     -- Killing
     , ((modm .|. shiftMask, xK_c), kill)
+    -- Urgent !!!
+    , ((modm, xK_y), focusUrgent)
     -- Restarting
     , ((modm, xK_q), cleanStart)
     -- Push window back into tiling
