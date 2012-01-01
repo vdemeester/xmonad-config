@@ -180,7 +180,7 @@ myTopics =
 myTopicConfig :: TopicConfig
 myTopicConfig = TopicConfig
     { topicDirs = M.fromList $
-        [ ("sites", "src/git/sites")
+        [ ("sites", "src/sites")
         , ("music", "music")
         , ("video", "video")
         , ("pictures", "pictures")
