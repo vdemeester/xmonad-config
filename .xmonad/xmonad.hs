@@ -77,7 +77,7 @@ main = do
 --- Options {{{
 -- Misc.
 myTerminal          = "urxvtc"
-myShell             = "bash"
+myShell             = "$SHELL"
 myBorderWidth       = 1
 -- Fonts (xft :-) & co)
 barFont             = "Play-8"
@@ -215,7 +215,7 @@ spawnShell :: X ()
 spawnShell = currentTopicDir myTopicConfig >>= spawnShellIn
  
 spawnShellIn :: Dir -> X ()
-spawnShellIn dir = spawn $ myTerminal ++ " -title urxvt -e sh -c 'cd ''" ++ dir ++ "'' && " ++ myShell ++ "'"
+spawnShellIn dir = spawn $ myTerminal ++ " -title urxvt -e sh -c 'cd ''" ++ dir ++ "'' && " ++ myShell ++ " -l'"
 --- }}}
 
 --- ManageHooks {{{
