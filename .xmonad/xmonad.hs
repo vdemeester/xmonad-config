@@ -236,7 +236,7 @@ myLayout = avoidStruts $ onWorkspace "chat" imLayout $ onWorkspace "web" webLayo
     where
         -- specific layouts
         imLayout = withIM (2/10) (And (ClassName "psi") (Resource "main")) Grid
-        webLayout = smartBorders $ (tabbed shrinkText myTheme) ||| Grid
+        webLayout = smartBorders $ full ||| (tabbed shrinkText myTheme) ||| Grid
         eclipseLayout = smartBorders $ full ||| Grid
         -- standard layouts
         standardLayouts = smartBorders $ Mirror tiled ||| full ||| tiled ||| misc
