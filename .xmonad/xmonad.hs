@@ -11,7 +11,6 @@
 -- Up to date xmonad configuration, using xmonad-0.9.2 packaged on Debian 
 -- testing (wheezy)
 --
--- vim:foldmethod=marker foldmarker={{{,}}}
 -------------------------------------------------------------------------------
 
 -- Imports {{{
@@ -328,3 +327,4 @@ myScratchPadList :: [ScratchPad]
 myScratchPadList = [scratchMixer, scratchTop, scratchTerminal, scratchMutt, scratchMusic, scratchVim]
 
 --- }}}
+-- vim:foldmethod=marker foldmarker={{{,}}}
