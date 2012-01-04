@@ -8,7 +8,7 @@
 -- Stability    :   unstable
 -- Portability  :   unportable (but want to be)
 --
--- Up to date xmonad configuration, using xmonad-0.9.2 packaged on Debian 
+-- Up to date xmonad configuration, using xmonad-0.10.0 packaged on Debian 
 -- testing (wheezy)
 --
 -------------------------------------------------------------------------------
@@ -41,6 +41,7 @@ import XMonad.Prompt.Man
 import XMonad.Prompt.RunOrRaise
 import XMonad.Prompt.Shell
 import XMonad.Prompt.Ssh
+import XMonad.Prompt.AppendFile
 import XMonad.Prompt.Workspace
 -- Topics
 import XMonad.Actions.TopicSpace
@@ -51,6 +52,10 @@ import XMonad.Util.Run
 import qualified XMonad.StackSet as W -- to shift and float windows
 import qualified Data.Map as M
 import Data.Monoid(mconcat)
+-- System
+import System.Exit
+import System.Directory
+import System.Environment
 -- Local import
 import ScratchPadKeys
 import Utils
@@ -58,6 +63,7 @@ import Utils
 
 --- Main {{{
 main = do
+    home <- getEnv "HOME"
     checkTopicConfig myTopics myTopicConfig
     xmproc <- spawnPipe "xmobar"
     xmonad $ withUrgencyHookC NoUrgencyHook urgencyConfig { suppressWhen = Focused } $ defaultConfig
@@ -124,6 +130,12 @@ myXPConfig = defaultXPConfig
     , bgHLight  = base2
     , fgHLight  = blue
     , position  = Top
+    -- Auto complete and "hit return" when only choice
+    -- , autoComplete = Just 400000
+    }
+
+myNoteXPConfig = myXPConfig
+    { position  = Bottom
     }
 
 --- Theme For Tabbed layout
@@ -253,7 +265,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_space), sendMessage NextLayout)
     , ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
     , ((modm, xK_Return), windows W.swapMaster)
-    , ((modm, xK_n), refresh)
+    , ((modm .|. controlMask, xK_n), refresh)
     , ((modm, xK_Tab), windows W.focusDown)
     , ((modm, xK_t), windows W.focusDown)
     , ((modm, xK_s), windows W.focusUp)
@@ -271,6 +283,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Prompt(s) search
     , ((modm, xK_F2), submap $ searchEngineMap $ promptSearch myXPConfig)
     , ((modm .|. shiftMask, xK_F2), submap $ searchEngineMap $ selectSearch)
+    -- Prompt note taking
+    , ((modm .|. shiftMask, xK_n),               appendFilePrompt myNoteXPConfig ("documents/.notes"))
     -- CycleWS
     , ((modm,               xK_Down),  nextWS)
     , ((modm,               xK_Up),    prevWS)
@@ -290,6 +304,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Urgent !!!
     , ((modm, xK_y), focusUrgent)
     -- Restarting
+    , ((modm .|. controlMask .|. shiftMask, xK_q),           io (exitWith ExitSuccess))
     , ((modm, xK_q), cleanStart)
     -- Push window back into tiling
     , ((modm, xK_l), withFocused $ windows . W.sink)
