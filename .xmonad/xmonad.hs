@@ -207,7 +207,7 @@ myTopicConfig = TopicConfig
     , defaultTopic = "default"
     , topicActions = M.fromList $
         [ ("music", spawn $ myTerminal ++ " -e ncmpcpp")
-        , ("chat", spawn "psi-plus")
+        , ("chat", spawn "pidgin")
         , ("eclipse", spawn "eclipse")
         ]
     }
@@ -250,7 +250,7 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] -- <+> manag
 myLayout = avoidStruts $ onWorkspace "chat" imLayout $ onWorkspace "web" webLayout $ onWorkspace "eclipse" eclipseLayout $ standardLayouts
     where
         -- specific layouts
-        imLayout = withIM (2/10) (And (ClassName "psi") (Resource "main")) Grid
+        imLayout = withIM (2/10) pidginRoster Grid
         webLayout = smartBorders $ full ||| (tabbed shrinkText myTheme) ||| Grid
         eclipseLayout = smartBorders $ full ||| Grid
         -- standard layouts
@@ -258,6 +258,9 @@ myLayout = avoidStruts $ onWorkspace "chat" imLayout $ onWorkspace "web" webLayo
         tiled = Tall 1 (2/100) (4/5)
         full  = Full
         misc  = Grid ||| tabbed shrinkText myTheme
+        pidginRoster    = And (ClassName "Pidgin") (Role "buddy_list")
+        skypeRoster     = (ClassName "Skype") `And` (Not (Title "Options")) `And` (Not (Role "Chats")) `And` (Not (Role "CallWindowForm"))
+        psiRoster       = (And (ClassName "psi") (Resource "main"))
 --- }}}
 
 --- MPD {{{
