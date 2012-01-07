@@ -12,7 +12,9 @@
 -- testing (wheezy)
 --
 -------------------------------------------------------------------------------
-
+{-# LANGUAGE
+     DeriveDataTypeable
+     #-}
 -- Imports {{{
 import XMonad
 -- Actions
@@ -46,12 +48,14 @@ import XMonad.Prompt.Workspace
 -- Topics
 import XMonad.Actions.TopicSpace
 -- Util
+import qualified XMonad.Util.ExtensibleState as XS
 import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.Run
 -- Misc
 import qualified XMonad.StackSet as W -- to shift and float windows
 import qualified Data.Map as M
 import Data.Monoid(mconcat)
+import Data.List
 -- System
 import System.Exit
 import System.Directory
@@ -256,6 +260,22 @@ myLayout = avoidStruts $ onWorkspace "chat" imLayout $ onWorkspace "web" webLayo
         misc  = Grid ||| tabbed shrinkText myTheme
 --- }}}
 
+--- MPD {{{
+-- Prompt & stuff for mpd
+newtype HostPrompt = HostPrompt { hostPrompt :: String } deriving (Read,Show,Typeable)
+instance ExtensionClass HostPrompt where
+    initialValue = HostPrompt "127.0.0.1"
+    extensionType = PersistentExtension
+
+instance XPrompt HostPrompt where showXPrompt _ = "Pick MPD Host: "
+promptHost = mkXPrompt (HostPrompt "") myXPConfig (return . compl) (XS.put . HostPrompt)
+    where compl s = nub $ filter (s `isPrefixOf`) ["127.0.0.1","192.168.1.11","172.20.1.199"]
+-- FIXME Use hostname !
+mpcAct c = do
+    h <- XS.gets hostPrompt
+    spawn $ unwords ["export MPD_HOST="++h,";","mpc",c]
+-- }}}
+
 --- Keys {{{
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. controlMask, xK_Return), spawnHere $ XMonad.terminal conf)
@@ -328,10 +348,15 @@ myAdditionalKeys =
     [ ("<XF86AudioMute>"       , spawn "amixer -q set Master toggle"      ) -- toggle mute
     , ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 1- unmute"    ) -- volume down 
     , ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 1+ unmute"    ) -- volume up
-    , ("<XF86AudioPlay>"       , spawn "mpc toggle"     ) -- play/pause mpd
-    , ("<XF86AudioStop>"       , spawn "mpc stop"       ) -- stop mpd
-    , ("<XF86AudioPrev>"       , spawn "mpc previous"       ) -- prev song
-    , ("<XF86AudioNext>"       , spawn "mpc next"       ) -- next song
+    , ("S-<XF86AudioPlay>"       , promptHost     ) -- play/pause mpd
+    , ("<XF86AudioPlay>"       , do mpcAct "toggle"     ) -- play/pause mpd
+    , ("<XF86AudioStop>"       , do mpcAct "stop"       ) -- stop mpd
+    , ("<XF86AudioPrev>"       , do mpcAct "previous"       ) -- prev song
+    , ("<XF86AudioNext>"       , do mpcAct "next"       ) -- next song
+--    , ("<XF86AudioPlay>"       , spawn "mpc toggle"     ) -- play/pause mpd
+--    , ("<XF86AudioStop>"       , spawn "mpc stop"       ) -- stop mpd
+--    , ("<XF86AudioPrev>"       , spawn "mpc previous"       ) -- prev song
+--    , ("<XF86AudioNext>"       , spawn "mpc next"       ) -- next song
     ] ++ scratchPadKeys myScratchPadList
 
 --- }}}
