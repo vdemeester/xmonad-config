@@ -28,6 +28,8 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.ManageHelpers (doCenterFloat)
+-- For... Java...
+import XMonad.Hooks.SetWMName
 -- Layout
 -- Import for smartBorder
 import XMonad.Layout.NoBorders
@@ -76,6 +78,7 @@ main = do
         , modMask               = mod4Mask -- use the Windows button as mod
         , manageHook            = manageHook defaultConfig <+> manageSpawn <+> myManageHook <+> manageScratchPads myScratchPadList
         , layoutHook            = myLayout
+        , startupHook           = startupHook defaultConfig >> setWMName "LG3D"
         , logHook               = dynamicLogWithPP $ myPP { ppOutput = hPutStrLn xmproc }
         , keys                  = myKeys
         , focusFollowsMouse     = False
