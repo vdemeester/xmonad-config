@@ -1,18 +1,22 @@
-                                          _ 
-    __  ___ __ ___   ___  _ __   __ _  __| |
-    \ \/ / '_ ` _ \ / _ \| '_ \ / _` |/ _` |
-     >  <| | | | | | (_) | | | | (_| | (_| |
-    /_/\_\_| |_| |_|\___/|_| |_|\__,_|\__,_|
-
+                                              __                             ___ __        
+    .--.--..--------..-----..-----..---.-..--|  |______.----..-----..-----..'  _|__|.-----.
+    |_   _||        ||  _  ||     ||  _  ||  _  |______|  __||  _  ||     ||   _|  ||  _  |
+    |__.__||__|__|__||_____||__|__||___._||_____|      |____||_____||__|__||__| |__||___  |
+                                                                                    |_____|
 
 XMonad is my window manager of choice, and this is the git repository where my
 configurations are stored.
+
+> xmonad is a dynamically tiling X11 window manager that is written and configured 
+> in Haskell. In a normal WM, you spend half your time aligning and searching for 
+> windows. xmonad makes work easier, by automating this. 
+> <small>[Xmonad](http://xmonad.org)</small>
 
 ## Basic information
 
 My XMonad configuration highlights are the following :
 
-* Keep default keymapping for actions (except I use the `Super` key as modifier)
+* Using `Super` key as modifier, instead of the default `Alt`
   
   As I'm most of the time on a [bepo](http://bepo.fr), I'm remapping almost all
   the keys to get the same behavior on a bepo keyboard and on a qwerty keyboard.
@@ -45,7 +49,8 @@ Modules that lies in `./lib`
 * dmenu (suckless-tools on debian)
 
 I'm using [debian](http://debian.org) testing with the haskell package from
-unstable (which are quite stable). This configuration should works on any other
+unstable (which are quite stable). I am using `cabal-install` on debian stable
+to get the last version on ghc 6. This configuration should works on any other
 Linux distribution (or even *BSD* and other unixes).
 
 ## Try it
