@@ -70,6 +70,7 @@ import qualified XMonad.Util.ExtensibleState as XS
 import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.Run
 import XMonad.Util.Scratchpad
+import XMonad.Util.NamedWindows (getName)
 -- Misc
 import XMonad.StackSet (view, greedyView, tag, hidden, stack)
 import qualified XMonad.StackSet as W -- to shift and float windows
@@ -91,7 +92,6 @@ import System.Environment
 import ScratchPadKeys
 import Utils
 -- }}}
-
 --- Options {{{
 -- Misc.
 myTerminal          = "urxvtc"
@@ -132,7 +132,6 @@ searchEngineMap method = M.fromList $
     ]
 --- }}}
 --- }}}
-
 --- Themes {{{
 -- Theme for prompt
 myXPConfig = defaultXPConfig
@@ -168,7 +167,6 @@ myTheme = defaultTheme
     , urgentTextColor       = red
     }
 --- }}}
-
 --- DynamicLogs {{{
 myPP :: PP
 myPP = xmobarPP
@@ -188,7 +186,6 @@ myPP = xmobarPP
             _                       -> pad s
     }
 --- }}}
-
 --- Topics (Workspaces) {{{
 -- Topic Data
 data TopicType = Code
@@ -356,7 +353,6 @@ codeTopicSession' :: TopicConfig -> String -> X ()
 codeTopicSession' tc topic = spawnScreenSession' tc topic >> gvimSession tc topic
 
 --- }}}
-
 --- ManageHooks {{{
 myManageHook :: ManageHook
 myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ]  <+> manageScratchPads scratchPadList
@@ -367,8 +363,18 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ]  <+> manageS
                       , ("Firefox"   , doShift "web" )
                       , ("irssi"     , doShift "irc")
                       ]
---- }}}
+-- UrgencyHook
+-- We are going to use notify-send
+data NotifyUrgencyHook = NotifyUrgencyHook deriving (Read, Show)
 
+instance UrgencyHook NotifyUrgencyHook where
+    urgencyHook NotifyUrgencyHook w = do
+        name <- getName w
+        ws <- gets windowset
+        whenJust (W.findTag w ws) (flash name)
+      where flash name index =
+                  spawn $ "notify-send " ++ "\"Urgent Window\" \"<b>" ++ (show name ++ "</b> requests your attention on workspace <b>" ++ index) ++ "</b>\""
+--- }}}
 --- Layout {{{
 tiledModifiers a = mkToggle1 NBFULL
                  $ maximize
@@ -423,7 +429,6 @@ myLayoutHook ts = avoidStruts
         skypeRoster     = (ClassName "Skype") `And` (Not (Title "Options")) `And` (Not (Role "Chats")) `And` (Not (Role "CallWindowForm"))
         psiRoster       = (And (ClassName "psi") (Resource "main"))
 --- }}}
-
 --- MPD {{{
 -- Prompt & stuff for mpd
 newtype HostPrompt = HostPrompt { hostPrompt :: String } deriving (Read,Show,Typeable)
@@ -439,7 +444,6 @@ mpcAct c = do
     h <- XS.gets hostPrompt
     spawn $ unwords ["export MPD_HOST="++h,";","mpc",c]
 -- }}}
-
 --- Keys {{{
 myKeys tc conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. controlMask, xK_Return), spawnHere $ XMonad.terminal conf)
@@ -528,7 +532,6 @@ myAdditionalKeys =
     ] ++ scratchPadKeys myScratchPadList
 
 --- }}}
-
 --- ScratchPad {{{
 -- | All here-defined scratchpads in a list
 myScratchPadList :: [ScratchPad]
@@ -594,9 +597,8 @@ myDynamicLogString tc pp = mergePPOutputs [mypprWindowSet tc, dynamicLogString .
 myDynamicLogWithPP :: TopicConfig -> PP -> X ()
 myDynamicLogWithPP tc pp = myDynamicLogString tc pp >>= io . ppOutput pp
 --- }}}
-
 --- Config {{{
-myConfig = withUrgencyHookC NoUrgencyHook urgencyConfig { suppressWhen = Focused }
+myConfig = withUrgencyHookC NotifyUrgencyHook urgencyConfig { suppressWhen = Focused }
          $ defaultConfig
          { borderWidth = 1
          , modMask               = mod4Mask -- use the Windows button as mod
@@ -620,7 +622,6 @@ updateMyConfig conf home tc ts = conf
     , layoutHook = myLayoutHook ts
     }
 --- }}}
-
 --- Main {{{
 main = do
     home <- getEnv "HOME"
