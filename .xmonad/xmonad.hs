@@ -101,7 +101,8 @@ myBorderWidth       = 1
 barFont             = "Play-8"
 -- themeFont           = "xft:Play:size=8"
 -- themeFont           = "xft:DejaVu Sans Mono:size=8:antialias=true"
-themeFont           = "xft:Droid Sans Mono:size=8:antialias=true"
+-- themeFont           = "xft:Droid Sans Mono:size=8:antialias=true"
+themeFont           = "xft:Ubuntu Mono:size=9:antialias=true"
 -- Colors, solarized
 base03              = "#002b36"
 base02              = "#073642"
@@ -177,11 +178,11 @@ myPP = xmobarPP
     , ppUrgent  = xmobarColor "#1C1C1C" "#df8787" . wrap " " " " . xmobarStrip
     , ppLayout  = xmobarColor "#1C1C1C" "#444444" . pad . \s ->
         case s of
-            "Tall"                  -> "▥"
-            "Mirror Tall"           -> "▤"
-            "Full"                  -> "□"
-            "Grid"                  -> "▦"
-            "IM Grid"               -> "▩"
+            "Tall"                  -> "T"
+            "Mirror Tall"           -> "MT"
+            "Full"                  -> "F"
+            "Grid"                  -> "G"
+            "IM Grid"               -> "IG"
             "Tabbed Simplest"       -> "▔"
             _                       -> pad s
     }

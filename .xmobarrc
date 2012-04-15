@@ -1,5 +1,6 @@
 -- Config { font           = "xft:Droid Sans Mono:size=8:bold:antialias=true"
-Config { font           = "xft:DejaVu Sans Mono:size=8:antialias=true"
+-- Config { font           = "xft:DejaVu Sans Mono:size=8:antialias=true"
+Config { font           = "xft:Ubuntu Mono:size=9:antialias=true"
          , bgColor      = "#161616"
          , fgColor      = "#afafdf"
          , border       = NoBorder
@@ -21,5 +22,5 @@ Config { font           = "xft:DejaVu Sans Mono:size=8:antialias=true"
          , sepChar      = "%"
          , alignSep     = "}{"
          -- ░▒▓❡ ❢ ❤ ❦ ❝ ❞ ➤ ❏ ▤ ▥ ▦ ▧ ▨ ▩ ◈ ◎ ◔ ◜◝◟◞ ◢ ◣ ◤ ◥"
-         , template = " %StdinReader% }{<fc=#657b83>❖</fc> %battery% <fc=#657b83>◈</fc> %cpu% <fc=#657b83>◈</fc> %memory% <fc=#657b83>◈</fc> <fc=#ffffaf>%date%</fc> ◢"
+         , template = "▓▒░%StdinReader% }{<fc=#657b83>▒</fc> %battery% <fc=#657b83>░</fc> %cpu% <fc=#657b83>░</fc> %memory% <fc=#657b83>░</fc> <fc=#ffffaf>%date%</fc> ░▒▓"
          }
