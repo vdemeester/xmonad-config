@@ -530,6 +530,11 @@ myAdditionalKeys =
 --    , ("<XF86AudioStop>"       , spawn "mpc stop"       ) -- stop mpd
 --    , ("<XF86AudioPrev>"       , spawn "mpc previous"       ) -- prev song
 --    , ("<XF86AudioNext>"       , spawn "mpc next"       ) -- next song
+    , ("<XF86View>"          , spawn "toggle-zoom.sh") -- Change display
+    , ("<XF86ModeLock>"          , spawn "xmessage lock") -- Change display
+    , ("<XF86Display>"          , spawn "xmessage display") -- Change display
+    , ("<XF86CycleAngle>"          , spawn "xmessage touchrotate") -- Change display
+    , ("<XF86Launch1>"          , spawn "xmessage Launch1") -- Change display
     ] ++ scratchPadKeys myScratchPadList
 
 --- }}}
