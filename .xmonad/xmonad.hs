@@ -71,6 +71,7 @@ import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.Run
 import XMonad.Util.Scratchpad
 import XMonad.Util.NamedWindows (getName)
+import XMonad.Util.WorkspaceCompare
 -- Misc
 import XMonad.StackSet (view, greedyView, tag, hidden, stack)
 import qualified XMonad.StackSet as W -- to shift and float windows
@@ -481,8 +482,8 @@ myKeys tc conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Prompt note taking
     , ((modm .|. shiftMask, xK_n),               appendFilePrompt myNoteXPConfig ("documents/.notes"))
     -- CycleWS
-    , ((modm,               xK_Down),  nextWS)
-    , ((modm,               xK_Up),    prevWS)
+    , ((modm,               xK_Down),  windows . W.greedyView =<< findWorkspace getSortByIndexNoSP Next HiddenNonEmptyWS 1)
+    , ((modm,               xK_Up),    windows . W.greedyView =<< findWorkspace getSortByIndexNoSP Prev HiddenNonEmptyWS 1)
     , ((modm .|. shiftMask, xK_Down),  shiftToNext)
     , ((modm .|. shiftMask, xK_Up),    shiftToPrev)
     , ((modm,               xK_Right), nextScreen)
@@ -514,6 +515,8 @@ myKeys tc conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (i,k) <- zip [1..9] [ xK_quotedbl, xK_less, xK_greater, xK_parenleft, xK_parenright, xK_at, xK_plus, xK_minus, xK_slash ]
     ]
     where
+        getSortByIndexNoSP =
+                  fmap (.scratchpadFilterOutWorkspace) getSortByIndex
         focusScreen n = screenWorkspace n >>= flip whenJust (windows . W.view)
 
 myAdditionalKeys :: [(String, X())]
