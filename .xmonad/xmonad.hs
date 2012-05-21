@@ -52,8 +52,8 @@ import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.Reflect
 import XMonad.Layout.ComboP
-import XMonad.Layout.TwoPane
 import XMonad.Layout.Tabbed
+import XMonad.Layout.TwoPane
 import XMonad.Layout.IM
 -- Prompt(s)
 import XMonad.Prompt
@@ -454,6 +454,8 @@ myKeys tc conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --[ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
     , ((modm, xK_space), sendMessage NextLayout)
     , ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
+    --, ((modm .|. controlMask, xK_space), myLayoutPrompt)
+    , ((modm .|. shiftMask, xK_f), sendMessage $ Toggle NBFULL)
     , ((modm, xK_Return), windows W.swapMaster)
     , ((modm .|. controlMask, xK_n), refresh)
     , ((modm, xK_Tab), windows W.focusDown)
@@ -465,7 +467,6 @@ myKeys tc conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_s), windows W.swapUp)
     , ((modm, xK_c), sendMessage Shrink)
     , ((modm, xK_r), sendMessage Expand)
-    , ((modm .|. controlMask, xK_space), sendMessage $ Toggle NBFULL)
     , ((modm, xK_b), sendMessage ToggleStruts)
     -- Prompt(s)
     , ((modm, xK_F1), manPrompt myXPConfig)
@@ -482,6 +483,8 @@ myKeys tc conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Prompt note taking
     , ((modm .|. shiftMask, xK_n),               appendFilePrompt myNoteXPConfig ("documents/.notes"))
     -- CycleWS
+    , ((modm .|. controlMask, xK_Down),  nextWS)
+    , ((modm .|. controlMask, xK_Up),    prevWS)
     , ((modm,               xK_Down),  windows . W.greedyView =<< findWorkspace getSortByIndexNoSP Next HiddenNonEmptyWS 1)
     , ((modm,               xK_Up),    windows . W.greedyView =<< findWorkspace getSortByIndexNoSP Prev HiddenNonEmptyWS 1)
     , ((modm .|. shiftMask, xK_Down),  shiftToNext)
