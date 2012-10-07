@@ -10,6 +10,13 @@
 --
 -- Up to date xmonad configuration, using xmonad-0.10.0 packaged on Debian 
 -- testing (wheezy)
+-- TODO: Rewrite it to accomodate my needs :
+--       - Learn Haskell :-) for good !
+--       - Specify few colors (theme) and use function (darken, ..) to
+--       configure the rest
+--       - Less layout, better (Full by default, smartborder (none)
+--       - Topics + Tag ?
+--       - Better mpd handling (+scratchpad), same for notes
 --
 -------------------------------------------------------------------------------
 {-# LANGUAGE
