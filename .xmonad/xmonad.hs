@@ -103,10 +103,12 @@ barFont             = "Play-8"
 -- themeFont           = "xft:Play:size=8"
 -- themeFont           = "xft:DejaVu Sans Mono:size=8:antialias=true"
 -- themeFont           = "xft:Droid Sans Mono:size=8:antialias=true"
-themeFont           = "xft:Ubuntu Mono:size=9:antialias=true"
+themeFont           = "xft:Ubuntu Mono:size=10:antialias=true"
 -- Colors, solarized
-base03              = "#002b36"
-base02              = "#073642"
+-- base03              = "#002b36"
+base03              = "#3f3f3f"
+-- base02              = "#073642"
+base02              = "#3f3f3f"
 base01              = "#586e75"
 base00              = "#657b83"
 base0               = "#839496"
@@ -121,6 +123,11 @@ violet              = "#6c71c4"
 blue                = "#268bd2"
 cyan                = "#2aa198"
 green               = "#afdf87"
+-- Colors
+myBgColor             = "#c9c9c9";
+myFgColor             = "#2c2c2c"
+myDarkBgColor         = "#3f3f3f";
+myDarkFgColor         = "#ffffff"
 -- Search engines {{{
 -- Custom engine definition (and custom search funciton ?)
 
@@ -138,10 +145,10 @@ searchEngineMap method = M.fromList $
 -- Theme for prompt
 myXPConfig = defaultXPConfig
     { font      = themeFont
-    , fgColor   = base03
-    , bgColor   = base3
-    , bgHLight  = base2
-    , fgHLight  = blue
+    , fgColor   = myDarkFgColor
+    , bgColor   = myDarkBgColor
+    , bgHLight  = myBgColor
+    , fgHLight  = myFgColor
     , position  = Top
     -- Auto complete and "hit return" when only choice
     -- , autoComplete = Just 400000
@@ -617,10 +624,12 @@ myConfig = withUrgencyHookC NotifyUrgencyHook urgencyConfig { suppressWhen = Foc
          , terminal = myTerminal
          -- , workspaces            = myTopics
          -- , layoutHook            = myLayout
-         , normalBorderColor     = "#191919"
+         -- , normalBorderColor     = "#191919"
+         , normalBorderColor     = myDarkBgColor
          -- , normalBorderColor = "#333333"
          -- , focusedBorderColor    = "#131313"
-         , focusedBorderColor = "#afdf87"
+         -- , focusedBorderColor = "#afdf87"
+         , focusedBorderColor = myBgColor
          -- , startupHook           = startupHook defaultConfig >> setWMName "LG3D"
          , startupHook = ewmhDesktopsStartup <+> setWMName "LG3D"
          , handleEventHook = ewmhDesktopsEventHook

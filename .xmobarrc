@@ -1,8 +1,8 @@
 -- Config { font           = "xft:Droid Sans Mono:size=8:bold:antialias=true"
 -- Config { font           = "xft:DejaVu Sans Mono:size=8:antialias=true"
-Config { font           = "xft:Ubuntu Mono:size=9:antialias=true"
-         , bgColor      = "#161616"
-         , fgColor      = "#afafdf"
+Config { font           = "xft:Ubuntu Mono:size=10:antialias=true"
+         , bgColor      = "#3f3f3f"
+         , fgColor      = "#ffffff"
          , border       = NoBorder
          , borderColor  = "#121212"
          , position     = Top
@@ -12,15 +12,11 @@ Config { font           = "xft:Ubuntu Mono:size=9:antialias=true"
                           , Run Memory ["-t","Mem: <usedratio>%", "-l", "#afdf87", "--normal","#cb4b16","--high","#dc322f"] 40
                           , Run Date "%a %b %_d %H:%M" "date" 60
                           , Run StdinReader
-                          , Run Battery ["-t","<timeleft> (<left>%)",
-                            "-L", "10", "-H", "80", "-p", "3",
-                            "--", "-O", "<fc=#afdf87>On</fc> - ", "-o", "",
-                            "-L", "-15", "-H", "-5",
-                            "-l", "#dc322f", "-m", "#268bd2", "-h", "#afdf87"]
+                          , Run BatteryP ["BAT0"] ["-t", "<timeleft> (<left>%)", "--", "-c", "energy_full"]
                              100
                           ]
          , sepChar      = "%"
          , alignSep     = "}{"
          -- ░▒▓❡ ❢ ❤ ❦ ❝ ❞ ➤ ❏ ▤ ▥ ▦ ▧ ▨ ▩ ◈ ◎ ◔ ◜◝◟◞ ◢ ◣ ◤ ◥"
-         , template = "▓▒░%StdinReader% }{<fc=#657b83>▒</fc> %battery% <fc=#657b83>░</fc> %cpu% <fc=#657b83>░</fc> %memory% <fc=#657b83>░</fc> <fc=#ffffaf>%date%</fc> ░▒▓"
+         , template = "%StdinReader% }{%battery% <fc=#657b83>░</fc> %cpu% <fc=#657b83>░</fc> %memory% <fc=#657b83>░</fc> <fc=#ffffaf>%date%</fc>"
          }
