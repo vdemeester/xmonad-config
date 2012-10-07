@@ -144,12 +144,13 @@ searchEngineMap method = M.fromList $
 --- Themes {{{
 -- Theme for prompt
 myXPConfig = defaultXPConfig
-    { font      = themeFont
-    , fgColor   = myDarkFgColor
-    , bgColor   = myDarkBgColor
-    , bgHLight  = myBgColor
-    , fgHLight  = myFgColor
-    , position  = Top
+    { font          = themeFont
+    , fgColor       = myDarkFgColor
+    , bgColor       = myDarkBgColor
+    , bgHLight      = myBgColor
+    , fgHLight      = myFgColor
+    , borderColor   = myDarkBgColor
+    , position      = Top
     -- Auto complete and "hit return" when only choice
     -- , autoComplete = Just 400000
     }
