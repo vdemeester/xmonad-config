@@ -17,6 +17,7 @@
 --       - Less layout, better (Full by default, smartborder (none)
 --       - Topics + Tag ?
 --       - Better mpd handling (+scratchpad), same for notes
+--       - Add several prompt (for task, …) ; and how to report ?
 --
 -------------------------------------------------------------------------------
 {-# LANGUAGE
