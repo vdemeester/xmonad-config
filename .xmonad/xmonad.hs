@@ -466,7 +466,6 @@ mpcAct c = do
 myKeys tc conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. controlMask, xK_Return), spawnHere $ XMonad.terminal conf)
     , ((modm .|. shiftMask, xK_Return), spawnShell tc) -- start shell in topic dir
-    , ((modm, xK_d), spawnDolphin) -- start shell in topic dir
     --[ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
     , ((modm, xK_space), sendMessage NextLayout)
     , ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
@@ -563,7 +562,7 @@ myAdditionalKeys =
 --- ScratchPad {{{
 -- | All here-defined scratchpads in a list
 myScratchPadList :: [ScratchPad]
-myScratchPadList = [scratchMixer, scratchTop, scratchTerminal, scratchMutt, scratchMusic, scratchVim]
+myScratchPadList = [scratchMixer, scratchTop, scratchTerminal, scratchMutt, scratchMusic, scratchVim, scratchNautilus]
 
 --- }}}
 --- Utils {{{

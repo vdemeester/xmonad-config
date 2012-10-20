@@ -29,6 +29,7 @@ module ScratchPadKeys (
     scratchMixer, scratchMusic,
     scratchTerminal, scratchTop,
     scratchMutt, scratchVim,
+    scratchNautilus,
     -- * ManageHooks
     -- $managehooks
     centerScreen, bottomEdge
@@ -125,12 +126,21 @@ scratchPadList = [scratchMixer, scratchMusic, scratchTop, scratchTerminal, scrat
 scratchMixer :: ScratchPad
 scratchMixer = ScratchPad
     { keybind  = "M4-x"
-    , cmd      = "urxvtc -name sp-alsamixer -e alsamixer"
-    , query    = resource =? "sp-alsamixer"
+    , cmd      = "mixer"
+    , query    = className=? "sp-mixer"
     , hook     = centerScreen 0.65
     }
 
--- | ncmpcpp center screen
+-- | nautilus center screen
+scratchNautilus:: ScratchPad
+scratchNautilus = ScratchPad
+    { keybind  = "M4-d"
+    , cmd      = "nautilus --class=sp-nautilus"
+    , query    = className =? "sp-nautilus"
+    , hook     = centerScreen 0.95
+    }
+
+-- | mutt center screen
 scratchMutt :: ScratchPad
 scratchMutt = ScratchPad
     { keybind  = "M4-m"
@@ -171,8 +181,7 @@ scratchVim = ScratchPad
     { keybind = "M4-v"
     , cmd     = "urxvtc -name sp-vim -e vim"
     , query   = resource =? "sp-vim"
-    -- , hook    = centerScreen 0.85
-    , hook    = nonFloating
+    , hook    = centerScreen 0.85
     }
 
 -- $managehooks
