@@ -1,4 +1,4 @@
--- Config { font           = "xft:Droid Sans Mono:size=8:bold:antialias=true"
+-- Config { font           = "xft:Droid Sans Mono:size=8:antialias=true"
 -- Config { font           = "xft:DejaVu Sans Mono:size=8:antialias=true"
 Config { font           = "xft:Ubuntu Mono:size=10:antialias=true"
          , bgColor      = "#262626"
