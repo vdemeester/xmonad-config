@@ -12,6 +12,9 @@ configurations are stored.
 > windows. xmonad makes work easier, by automating this. 
 > <small>[Xmonad](http://xmonad.org)</small>
 
+I switched to awesome-wm a while ago (more than a year now) but I think I'm gonna rework this
+setup to be used with KDE4 as it integrates way better than awesome-wm with it.
+
 ## Basic information
 
 My XMonad configuration highlights are the following :
