@@ -135,8 +135,8 @@ scratchMixer = ScratchPad
 scratchNautilus:: ScratchPad
 scratchNautilus = ScratchPad
     { keybind  = "M4-d"
-    , cmd      = "nautilus --class=sp-nautilus"
-    , query    = className =? "sp-nautilus"
+    , cmd      = "urxvtc -name sp-ranger -e ranger"
+    , query    = resource =? "sp-ranger"
     , hook     = centerScreen 0.95
     }
 
