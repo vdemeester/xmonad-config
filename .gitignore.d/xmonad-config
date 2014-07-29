@@ -6,6 +6,7 @@
 !.xmonad/lib/ScratchPadKeys.hs
 !.xmonad/lib/Utils.hs
 !.xmonad/xmonad.hs
+!.xmonad/xmonad.hs.old
 !.xmonad/xmonad.legacy.hs
 !.gitignore.d
 !.gitignore.d/xmonad-config
