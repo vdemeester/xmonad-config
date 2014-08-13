@@ -16,6 +16,10 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.Maximize
+import XMonad.Actions.SpawnOn
+import XMonad.Prompt
+import XMonad.Prompt.Shell
+import XMonad.Prompt.Ssh
 
 --- Variables {{
 myTerminal = "urxvt"
@@ -24,9 +28,13 @@ myTerminal = "urxvt"
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm, xK_space), sendMessage NextLayout)
     , ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
-    --, ((modm .|. controlMask, xK_space), myLayoutPrompt)
+    , ((modm, xK_Return), spawnHere myTerminal)
+    -- , ((mod1Mask,xK_s), shellPromptHere defaultXPConfig)
+    -- , ((modm .|. controlMask, xK_space), myLayoutPrompt)
+    , ((modm, xK_o), shellPrompt defaultXPConfig) -- shellPromptHere
+    , ((modm .|. controlMask, xK_s), sshPrompt defaultXPConfig)
     , ((modm .|. shiftMask, xK_f), sendMessage $ Toggle NBFULL)
-    , ((modm, xK_Return), windows W.swapMaster)
+    , ((mod1Mask, xK_Return), windows W.swapMaster)
     , ((modm .|. controlMask, xK_n), refresh)
     , ((modm, xK_Tab), windows W.focusDown)
     , ((modm, xK_t), windows W.focusDown)
@@ -52,7 +60,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_z),     toggleWS)
     -- Topics
     -- Killing
-    , ((modm .|. shiftMask, xK_c), kill)
+    , ((modm .|. shiftMask, xK_x), kill)
     -- Urgent !!!
     , ((modm, xK_y), focusUrgent)
     -- Restarting
@@ -62,11 +70,14 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_comma), sendMessage (IncMasterN 1))
     , ((modm, xK_period), sendMessage (IncMasterN (-1)))
     ]
-    -- FIXME: the following stuff is doing no sheet
---    ++
---    [((modm, k), switchNthLastFocused myTopicConfig i)
+    -- FIXME: the following stuff is doing no shit
+    ++ [((m .|. modm, k), windows $ f i)
+       | (i, k) <- zip (XMonad.workspaces conf) [ xK_quotedbl, xK_less, xK_greater, xK_parenleft, xK_parenright, xK_at, xK_plus, xK_minus, xK_slash ]
+       , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+
+---    [((modm, k), switchNthLastFocused myTopicConfig i)
 ---        | (i,k) <- zip [1..9] [ xK_quotedbl, xK_less, xK_greater, xK_parenleft, xK_parenright, xK_at, xK_plus, xK_minus, xK_slash ]
---    ]
+---    ]
 --- }}
 --- Main {{
 main = xmonad kdeConfig
@@ -76,7 +87,7 @@ main = xmonad kdeConfig
     , startupHook = ewmhDesktopsStartup <+> setWMName "LG3D"
     , focusFollowsMouse = False
     , modMask = mod4Mask -- use the Windows button as mod
-    , manageHook = manageHook kdeConfig <+> myManageHook
+    , manageHook = manageSpawn <+> manageHook kdeConfig <+> myManageHook
     }
  
 myManageHook = composeAll . concat $
