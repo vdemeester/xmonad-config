@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleContexts #-}
+
 import XMonad
 import XMonad.Config.Kde
 import qualified XMonad.StackSet as W -- to shift and float windows
@@ -20,6 +22,11 @@ import XMonad.Actions.SpawnOn
 import XMonad.Prompt
 import XMonad.Prompt.Shell
 import XMonad.Prompt.Ssh
+import XMonad.Util.NamedScratchpad
+import XMonad.Hooks.ManageHelpers
+import XMonad.Util.NamedWindows
+
+import qualified XMonad.StackSet as W
 
 --- Variables {{
 myTerminal = "urxvt"
@@ -29,6 +36,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm, xK_space), sendMessage NextLayout)
     , ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
     , ((modm, xK_Return), spawnHere myTerminal)
+    , ((modm .|. controlMask, xK_l), spawnHere "screenlock")
     -- , ((mod1Mask,xK_s), shellPromptHere defaultXPConfig)
     -- , ((modm .|. controlMask, xK_space), myLayoutPrompt)
     , ((modm, xK_o), shellPrompt defaultXPConfig) -- shellPromptHere
@@ -36,6 +44,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_f), sendMessage $ Toggle NBFULL)
     , ((mod1Mask, xK_Return), windows W.swapMaster)
     , ((modm .|. controlMask, xK_n), refresh)
+    , ((modm, xK_dollar), namedScratchpadAction scratchpads "scratch")
     , ((modm, xK_Tab), windows W.focusDown)
     , ((modm, xK_t), windows W.focusDown)
     , ((modm, xK_s), windows W.focusUp)
@@ -78,16 +87,34 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 ---    [((modm, k), switchNthLastFocused myTopicConfig i)
 ---        | (i,k) <- zip [1..9] [ xK_quotedbl, xK_less, xK_greater, xK_parenleft, xK_parenright, xK_at, xK_plus, xK_minus, xK_slash ]
 ---    ]
+isModal :: Query Bool
+isModal = isInProperty "_NET_WM_STATE" "_NET_WM_STATE_MODAL"
+
+--- }}
+--- Scratchpads {{
+scratchpads :: [NamedScratchpad]
+scratchpads =
+    [NS "scratch" "urxvt --title scratch -e 'zsh -c \"tmx default\"'" (title =? "scratch")
+        (customFloating $ W.RationalRect 0 0 1 0.5)
+    ]
 --- }}
 --- Main {{
-main = xmonad kdeConfig
+main = xmonad $ kdeConfig
     {
       terminal = myTerminal
     , keys = myKeys
     , startupHook = ewmhDesktopsStartup <+> setWMName "LG3D"
     , focusFollowsMouse = False
     , modMask = mod4Mask -- use the Windows button as mod
-    , manageHook = manageSpawn <+> manageHook kdeConfig <+> myManageHook
+    , manageHook = composeAll
+--      [ manageSpawn <+> manageHook kdeConfig <+> myManageHook
+      [ isFullscreen --> doFullFloat
+      , isModal --> doFloat
+      , manageSpawn
+      , namedScratchpadManageHook scratchpads
+      , manageHook kdeConfig
+      , myManageHook
+      ]
     }
  
 myManageHook = composeAll . concat $
