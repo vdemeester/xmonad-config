@@ -8,5 +8,9 @@
 !.xmonad/xmonad.hs
 !.xmonad/xmonad.hs.old
 !.xmonad/xmonad.legacy.hs
+!.config
+!.config/mr
+!.config/mr/config.d
+!.config/mr/config.d/xmonad.vcsh
 !.gitignore.d
 !.gitignore.d/xmonad-config
