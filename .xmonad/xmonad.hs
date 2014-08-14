@@ -94,8 +94,8 @@ isModal = isInProperty "_NET_WM_STATE" "_NET_WM_STATE_MODAL"
 --- Scratchpads {{
 scratchpads :: [NamedScratchpad]
 scratchpads =
-    [NS "scratch" "urxvt --title scratch -e 'zsh -c \"tmx default\"'" (title =? "scratch")
-        (customFloating $ W.RationalRect 0 0 1 0.5)
+    [NS "scratch" "urxvt -title sp-term -name sp-term -e tmx default" (resource =? "sp-term")
+        (customFloating $ W.RationalRect 0 0 1 0.4)
     ]
 --- }}
 --- Main {{
