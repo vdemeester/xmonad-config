@@ -7,6 +7,8 @@ import System.Taffybar.FreedesktopNotifications
 import System.Taffybar.Weather
 import System.Taffybar.MPRIS
 
+import Graphics.UI.Gtk.General.RcStyle (rcParseString)
+
 import System.Taffybar.Widgets.PollingBar
 import System.Taffybar.Widgets.PollingGraph
 
@@ -38,6 +40,14 @@ main = do
       mem = pollingGraphNew memCfg 1 memCallback
       cpu = pollingGraphNew cpuCfg 0.5 cpuCallback
       tray = systrayNew
+
+      font = "Ubuntu Mono 10"
+
+  rcParseString $ ""
+    ++ "style \"default\" {"
+    ++ "  font_name = \"" ++ font ++ "\""
+    ++ "}"
+  
   defaultTaffybar defaultTaffybarConfig { startWidgets = [ pager, note ]
                                         , endWidgets = [ tray, wea, clock, mem, cpu, mpris ]
                                         }

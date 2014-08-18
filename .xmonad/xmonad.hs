@@ -46,9 +46,12 @@ myBgHLight      = "#4C7899"
 myBorderColor   = "#222222"
 myBorderHLight  = "#285577"
 
+myFont          = "xft:Ubuntu Mono:medium:pixelsize=14"
+
 myXPConfig :: XPConfig
 myXPConfig = defaultXPConfig
-             { bgColor     = myBgColor
+             { font        = myFont
+             , bgColor     = myBgColor
              , fgColor     = myFgColor
              , fgHLight    = myFgHLight
              , bgHLight    = myBgHLight
