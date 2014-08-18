@@ -25,6 +25,7 @@ import XMonad.Prompt.Ssh
 import XMonad.Util.NamedScratchpad
 import XMonad.Hooks.ManageHelpers
 import XMonad.Util.NamedWindows
+import System.Taffybar.Hooks.PagerHints (pagerHints)
 
 import qualified XMonad.StackSet as W
 
@@ -99,7 +100,7 @@ scratchpads =
     ]
 --- }}
 --- Main {{
-main = xmonad $ kdeConfig
+main = xmonad $ pagerHints $ kdeConfig
     {
       terminal = myTerminal
     , keys = myKeys

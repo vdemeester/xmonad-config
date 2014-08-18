@@ -9,6 +9,8 @@
 !.xmonad/xmonad.hs.old
 !.xmonad/xmonad.legacy.hs
 !.config
+!.config/taffybar
+!.config/taffybar/taffybar.hs
 !.config/mr
 !.config/mr/config.d
 !.config/mr/config.d/xmonad.vcsh
