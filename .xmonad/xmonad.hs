@@ -81,7 +81,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. controlMask, xK_space), myLayoutPrompt)
     , ((modm, xK_o), shellPrompt myXPConfig) -- shellPromptHere
     , ((modm .|. controlMask, xK_s), sshPrompt mySshXPConfig)
-     , ((modm .|. shiftMask, xK_g), windowPromptGoto
+    , ((modm .|. controlMask, xK_g), windowPromptGoto
                                             myWindowXPConfig { autoComplete = Just 500000 } )
     , ((modm .|. shiftMask, xK_f), sendMessage $ Toggle NBFULL)
     , ((modm .|. mod1Mask, xK_Return), windows W.swapMaster)
