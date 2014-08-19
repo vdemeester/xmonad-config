@@ -22,6 +22,7 @@ import XMonad.Actions.SpawnOn
 import XMonad.Prompt
 import XMonad.Prompt.Shell
 import XMonad.Prompt.Ssh
+import XMonad.Prompt.Window
 import XMonad.Util.NamedScratchpad
 import XMonad.Hooks.ManageHelpers
 import XMonad.Util.NamedWindows
@@ -56,7 +57,18 @@ myXPConfig = defaultXPConfig
              , fgHLight    = myFgHLight
              , bgHLight    = myBgHLight
              , borderColor = myBorderColor
+             , position    = Top
              }
+
+myWindowXPConfig = myXPConfig
+                { bgColor  = "#ffdead"
+                , fgColor  = "#666666"
+                }
+                
+mySshXPConfig = myXPConfig
+                { bgColor  = "#4682b4"
+                , fgColor  = "#eeeeee"
+                }
 
 --- }}
 --- Keys {{
@@ -68,7 +80,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((mod1Mask,xK_s), shellPromptHere myXPConfig)
     -- , ((modm .|. controlMask, xK_space), myLayoutPrompt)
     , ((modm, xK_o), shellPrompt myXPConfig) -- shellPromptHere
-    , ((modm .|. controlMask, xK_s), sshPrompt myXPConfig)
+    , ((modm .|. controlMask, xK_s), sshPrompt mySshXPConfig)
+     , ((modm .|. shiftMask, xK_g), windowPromptGoto
+                                            myWindowXPConfig { autoComplete = Just 500000 } )
     , ((modm .|. shiftMask, xK_f), sendMessage $ Toggle NBFULL)
     , ((modm .|. mod1Mask, xK_Return), windows W.swapMaster)
     , ((modm .|. controlMask, xK_n), refresh)
