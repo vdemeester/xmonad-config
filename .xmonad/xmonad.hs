@@ -25,11 +25,39 @@ import XMonad.Prompt.Ssh
 import XMonad.Util.NamedScratchpad
 import XMonad.Hooks.ManageHelpers
 import XMonad.Util.NamedWindows
+import System.Taffybar.Hooks.PagerHints (pagerHints)
 
 import qualified XMonad.StackSet as W
 
 --- Variables {{
 myTerminal = "urxvt"
+
+-- colors
+myFgColor       = "#888888"
+myFgHLight      = "#FFFFFF"
+myFgDimLight    = "#505050"
+myTextHLight    = "#FAFAC0"
+myNotifyColor   = "#F39D21"
+myWarningColor  = "#D23D3D"
+
+myBgColor       = "#181512"
+myBgDimLight    = "#333333"
+myBgHLight      = "#4C7899"
+myBorderColor   = "#222222"
+myBorderHLight  = "#285577"
+
+myFont          = "xft:Ubuntu Mono:medium:pixelsize=14"
+
+myXPConfig :: XPConfig
+myXPConfig = defaultXPConfig
+             { font        = myFont
+             , bgColor     = myBgColor
+             , fgColor     = myFgColor
+             , fgHLight    = myFgHLight
+             , bgHLight    = myBgHLight
+             , borderColor = myBorderColor
+             }
+
 --- }}
 --- Keys {{
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
@@ -37,10 +65,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
     , ((modm, xK_Return), spawnHere myTerminal)
     , ((modm .|. controlMask, xK_l), spawnHere "screenlock")
-    -- , ((mod1Mask,xK_s), shellPromptHere defaultXPConfig)
+    -- , ((mod1Mask,xK_s), shellPromptHere myXPConfig)
     -- , ((modm .|. controlMask, xK_space), myLayoutPrompt)
-    , ((modm, xK_o), shellPrompt defaultXPConfig) -- shellPromptHere
-    , ((modm .|. controlMask, xK_s), sshPrompt defaultXPConfig)
+    , ((modm, xK_o), shellPrompt myXPConfig) -- shellPromptHere
+    , ((modm .|. controlMask, xK_s), sshPrompt myXPConfig)
     , ((modm .|. shiftMask, xK_f), sendMessage $ Toggle NBFULL)
     , ((modm .|. mod1Mask, xK_Return), windows W.swapMaster)
     , ((modm .|. controlMask, xK_n), refresh)
@@ -99,7 +127,7 @@ scratchpads =
     ]
 --- }}
 --- Main {{
-main = xmonad $ kdeConfig
+main = xmonad $ pagerHints $ kdeConfig
     {
       terminal = myTerminal
     , keys = myKeys
