@@ -23,6 +23,8 @@ import XMonad.Prompt
 import XMonad.Prompt.Shell
 import XMonad.Prompt.Ssh
 import XMonad.Prompt.Window
+import qualified XMonad.Actions.Submap as SM
+import qualified XMonad.Actions.Search as S
 import XMonad.Util.NamedScratchpad
 import XMonad.Hooks.ManageHelpers
 import XMonad.Util.NamedWindows
@@ -70,6 +72,12 @@ mySshXPConfig = myXPConfig
                 , fgColor  = "#eeeeee"
                 }
 
+searchEngineMap method = M.fromList $
+                         [ ((0, xK_g), method S.google)
+                         , ((0, xK_h), method S.hoogle)
+                         , ((0, xK_w), method S.wikipedia)
+                         , ((0, xK_m), method S.multi)
+                         ]
 --- }}
 --- Keys {{
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
@@ -80,9 +88,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((mod1Mask,xK_s), shellPromptHere myXPConfig)
     -- , ((modm .|. controlMask, xK_space), myLayoutPrompt)
     , ((modm, xK_o), shellPrompt myXPConfig) -- shellPromptHere
-    , ((modm .|. controlMask, xK_s), sshPrompt mySshXPConfig)
+    , ((modm .|. controlMask, xK_r), sshPrompt mySshXPConfig)
     , ((modm .|. controlMask, xK_g), windowPromptGoto
                                             myWindowXPConfig { autoComplete = Just 500000 } )
+    -- Search commands
+    , ((modm .|. controlMask, xK_s), SM.submap $ searchEngineMap $ S.promptSearch myXPConfig)
+    , ((modm .|. controlMask .|. shiftMask, xK_s), SM.submap $ searchEngineMap $ S.selectSearch)
     , ((modm .|. shiftMask, xK_f), sendMessage $ Toggle NBFULL)
     , ((modm .|. mod1Mask, xK_Return), windows W.swapMaster)
     , ((modm .|. controlMask, xK_n), refresh)
