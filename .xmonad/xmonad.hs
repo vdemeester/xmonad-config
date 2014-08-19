@@ -42,7 +42,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_o), shellPrompt defaultXPConfig) -- shellPromptHere
     , ((modm .|. controlMask, xK_s), sshPrompt defaultXPConfig)
     , ((modm .|. shiftMask, xK_f), sendMessage $ Toggle NBFULL)
-    , ((mod1Mask, xK_Return), windows W.swapMaster)
+    , ((modm .|. mod1Mask, xK_Return), windows W.swapMaster)
     , ((modm .|. controlMask, xK_n), refresh)
     , ((modm, xK_dollar), namedScratchpadAction scratchpads "scratch")
     , ((modm, xK_Tab), windows W.focusDown)
