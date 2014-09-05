@@ -88,6 +88,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((mod1Mask,xK_s), shellPromptHere myXPConfig)
     -- , ((modm .|. controlMask, xK_space), myLayoutPrompt)
     , ((modm, xK_o), shellPrompt myXPConfig) -- shellPromptHere
+    , ((modm, xK_j), spawnHere "menulauncher")
     , ((modm .|. controlMask, xK_r), sshPrompt mySshXPConfig)
     , ((modm .|. controlMask, xK_g), windowPromptGoto
                                             myWindowXPConfig { autoComplete = Just 500000 } )
