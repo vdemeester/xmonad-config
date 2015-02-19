@@ -1,3 +1,6 @@
+This repository is kinda **DEPRECATED** as I'm not using xmonad anymore. *But*
+it will stay there for the time beeing as inspiration ;-).
+
                                               __                             ___ __        
     .--.--..--------..-----..-----..---.-..--|  |______.----..-----..-----..'  _|__|.-----.
     |_   _||        ||  _  ||     ||  _  ||  _  |______|  __||  _  ||     ||   _|  ||  _  |
